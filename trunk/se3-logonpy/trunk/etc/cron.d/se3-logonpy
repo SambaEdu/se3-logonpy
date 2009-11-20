@@ -1,2 +1,0 @@
-# Rajout  disable-gpo.lck pour les postes faisant partis d'un parc ayant un parc avec "description: disable_gpo"
-0 6  * * *   root    /usr/share/se3/sbin/no-gpo-upload.sh >/dev/null 2>&1
