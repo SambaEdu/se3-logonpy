@@ -17,9 +17,16 @@ workgroup="$(grep "workgroup" /etc/samba/smb.conf|cut -d '=' -f2|sed -s "s/ //g"
 netbios="$(grep "netbios name" /etc/samba/smb.conf|cut -d '=' -f2|sed -s "s/ //g")"
 
 # Mise en place helper cpau
+if -e [ /usr/share/se3/includes/config.inc.sh ];then
+. /usr/share/se3/includes/config.inc.sh -m
+else
 source /var/se3/Progs/install/installdll/confse3.ini
-adminse3="$(echo $compte_admin_local|sed -s 's/\r//g')"
+#adminse3="$(echo $compte_admin_local|sed -s 's/\r//g')"
 xppass="$(echo $password_admin_local|sed -s 's/\r//g')"
+
+fi
+
+adminse3="adminse3"
 
 /usr/share/se3/sbin/update-share.sh -a netlogon logonpy.sh Win95
 /usr/share/se3/sbin/update-share.sh -a profiles logonpy-gpo.sh Win2K WinXP Vista
