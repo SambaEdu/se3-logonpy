@@ -7,7 +7,14 @@
 #level: 01
 
 # Should be run once by machine
-[ -f  /home/netlogon/$2.lck -o -f /home/netlogon/machine/$2/no-gpo-upload.lck ] && exit 0
+[ -f  /home/netlogon/$2.lck ] && exit 0
+if [ -f /home/netlogon/machine/$2/no-gpo-upload.lck ]; then
+    [ ! -d "/home/$1" ] && /usr/share/se3/shares/shares.avail/mkhome.sh $1 $2 $3 $4
+    /usr/share/se3/logonpy/logon.py $1 $2 $4
+    chmod -R 755 /home/$1/profil/Demarrer
+    exit 0
+fi
+
 >/home/netlogon/$2.lck
 
 function deleteREG
