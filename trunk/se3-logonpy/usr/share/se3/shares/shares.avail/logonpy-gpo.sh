@@ -7,15 +7,21 @@
 #level: 01
 
 # Should be run once by machine
-[ -f  /home/netlogon/$2.lck ] && exit 0
-if [ -f /home/netlogon/machine/$2/no-gpo-upload.lck ]; then
-    [ ! -d "/home/$1" ] && /usr/share/se3/shares/shares.avail/mkhome.sh $1 $2 $3 $4
-    /usr/share/se3/logonpy/logon.py $1 $2 $4
-    chmod -R 755 /home/$1/profil/Demarrer
-    exit 0
-fi
-
+[ -f  /home/netlogon/$2.lck -o -f /home/netlogon/machine/$2/no-gpo-upload.lck ] && exit 0
 >/home/netlogon/$2.lck
+
+if [ -e /etc/se3/config_m.cache.sh ]; then
+	. /etc/se3/config_m.cache.sh
+	dom="$se3_domain"
+
+else
+
+	source /var/se3/Progs/install/installdll/confse3.ini
+	adminse3="$(echo $compte_admin_local|sed -e 's/\r//g')"
+	xppass="$(echo $password_admin_local|sed -e 's/\r//g')"
+	se3ip="$(echo $ip_se3|sed -e 's/\r//g')"
+	dom="$(echo $domaine|sed -e 's/\r//g')"
+fi
 
 function deleteREG
 {
@@ -79,14 +85,10 @@ function setACL
 }
 
 [ ! -d /home/netlogon/machine/$2 ] && mkdir -p /home/netlogon/machine/$2
-source /var/se3/Progs/install/installdll/confse3.ini
-adminse3="$(echo $compte_admin_local|sed -e 's/\r//g')"
-passadmin="$(echo $password_admin_local|sed -e 's/\r//g')"
-se3ip="$(echo $ip_se3|sed -e 's/\r//g')"
-dom="$(echo $domaine|sed -e 's/\r//g')"
+
 (
 echo username=adminse3
-echo password=$passadmin
+echo password=$xppass
 echo domain=$2
 )>/home/netlogon/machine/$2/gpoPASSWD
 
