@@ -17,7 +17,7 @@ workgroup="$(grep "workgroup" /etc/samba/smb.conf|cut -d '=' -f2|sed -s "s/ //g"
 netbios="$(grep "netbios name" /etc/samba/smb.conf|cut -d '=' -f2|sed -s "s/ //g")"
 
 # Mise en place helper cpau
-if -e [ /usr/share/se3/includes/config.inc.sh ];then
+if [ -e /usr/share/se3/includes/config.inc.sh ];then
 . /usr/share/se3/includes/config.inc.sh -m
 else
 source /var/se3/Progs/install/installdll/confse3.ini
