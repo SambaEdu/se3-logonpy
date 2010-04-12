@@ -32,7 +32,6 @@ $liens1=array(array(
               gettext("Suppression"),"printers/delete_printer_choice.php","se3_is_admin",2,
               gettext("Imprimante par defaut"),"printers/default_printer.php","se3_is_admin",2,
               gettext("Liste des imprimantes"),"printers/list_printers.php","printers_is_admin",1,
-              gettext("Info serveur CUPS"),"printers/server_CUPS.php","se3_is_admin",1,
       ));
 $liens=array_merge($liens,$liens1);
 ?>
