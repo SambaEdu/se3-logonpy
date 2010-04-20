@@ -36,8 +36,8 @@ adminse3="adminse3"
 export HOME=/root
 ############################
 cd /tmp
-wine /home/netlogon/CPAU.exe -u "$adminse3" -wait  -p "$xppass" -file gpo_helper.job -lwop -hide -ex "\\\\$netbios\\netlogon\\machine\\{%{COMPUTERNAME}%}\\EnableGPO.bat" -enc 
-wine /home/netlogon/CPAU.exe -u "$adminse3" -wait  -p "$xppass" -file Reg_helper.job -lwop -hide -ex "regedit.exe /s \\\\$netbios\\netlogon\\machine\\{%{COMPUTERNAME}%}\\user.reg&del /q \\\\$netbios\\netlogon\\machine\\{%{COMPUTERNAME}%}\\user.reg" -enc 
+env WINEDEBUG=-all wine /home/netlogon/CPAU.exe -u "$adminse3" -wait  -p "$xppass" -file gpo_helper.job -lwop -hide -ex "\\\\$netbios\\netlogon\\machine\\{%{COMPUTERNAME}%}\\EnableGPO.bat" -enc 
+env WINEDEBUG=-all wine /home/netlogon/CPAU.exe -u "$adminse3" -wait  -p "$xppass" -file Reg_helper.job -lwop -hide -ex "regedit.exe /s \\\\$netbios\\netlogon\\machine\\{%{COMPUTERNAME}%}\\user.reg&del /q \\\\$netbios\\netlogon\\machine\\{%{COMPUTERNAME}%}\\user.reg" -enc 
 [ ! -d /home/netlogon/machine ] && mkdir /home/netlogon/machine
 mv -f gpo_helper.job /home/netlogon/machine
 mv -f Reg_helper.job /home/netlogon/machine

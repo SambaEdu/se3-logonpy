@@ -91,6 +91,16 @@ class se3DB:
 
         cursor.close ()
 
+        if self.getValue ("corbeille") == "1":
+            rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{00000000-0000-0000-0000-000000210979}\\",\
+                         "REG_SZ", "2000,XP,Vista,Seven", "Corbeille Réseau"))
+            rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{00000000-0000-0000-0000-000000210979}\\",\
+                         "REG_SZ", "2000,XP,Vista,Seven", "Corbeille Réseau"))
+            rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\NonEnum\{00000000-0000-0000-0000-000000210979}",\
+                         "REG_DWORD", "2000,XP,Vista,Seven", "0"))
+        else:
+            rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\NonEnum\{00000000-0000-0000-0000-000000210979}",\
+                         "REG_DWORD", "2000,XP,Vista,Seven", "1"))
         if wallModule:
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\ClassicShell",\
                          "REG_DWORD", "Vista,Seven", "SUPPR"))
@@ -109,11 +119,11 @@ class se3DB:
             rest.append (("HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper",\
                          "REG_SZ", "2000,XP", "C:\Windows\Web\Wallpaper\Se3.bmp"))
             rest.append (("HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper",\
-                         "REG_DWORD", "2000,XP", "PROTECT"))
+                         "REG_DWORD", "2000,XP", "PROTECT"))          
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\Wallpaper",\
-              		 	 "REG_SZ", "Vista,Seven", "C:\Windows\Web\Wallpaper\Se3.jpg"))
+                         "REG_SZ", "Vista,Seven", "C:\Windows\Web\Wallpaper\Se3.jpg"))
             rest.append (("HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper",\
-  		 	             "REG_SZ", "Vista,Seven", "C:\Windows\Web\Wallpaper\Se3.jpg"))
+                         "REG_SZ", "Vista,Seven", "C:\Windows\Web\Wallpaper\Se3.jpg"))
             if not tileWallSet:
                 rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\WallpaperStyle",\
                          "REG_SZ", "2000,XP,Vista,Seven", "2"))

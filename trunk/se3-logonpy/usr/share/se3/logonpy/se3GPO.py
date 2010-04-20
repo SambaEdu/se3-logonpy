@@ -58,7 +58,9 @@ default_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Po
                 ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\BitBucket\KnownFolder\{374DE290-123F-4565-9164-39C4925E467B}\NukeOnDelete', 'REG_DWORD', 'Vista', '1'),
                 ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\BitBucket\KnownFolder\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}\NukeOnDelete', 'REG_DWORD', 'Vista', '1'),
                 ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\BitBucket\KnownFolder\{FDD39AD0-238F-46AF-ADB4-6C85480369C7}\NukeOnDelete', 'REG_DWORD', 'Vista', '1'),
+                ('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\NetCache\Enabled', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\NetCache\NoConfigCache', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
+                ('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\NetCache\FormatDataBase', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\NetCache\DisableFRAdminPin', 'REG_DWORD', '2000,XP,Vista,Seven', '2'),
                 ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel\{645FF040-5081-101B-9F08-00AA002F954E}', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\ClassicStartMenu\{645FF040-5081-101B-9F08-00AA002F954E}', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
@@ -297,10 +299,12 @@ class se3GPO:
                 try:
                     if rest[3] == "SUPPR":
                         hexdata = self.__polStr (key, "**Del."+value, type, "0")
-                    elif rest[3] == "PROTECT":
-                        hexdata = self.__polStr (key, "**SecureKey", REG_DWORD, "1")
+                    elif rest[3] == "DELKEY":
+                        hexdata = self.__polStr (key, "**DeleteKeys\0", REG_SZ, value)
                     elif rest[3] == "UNPROTECT":
                         hexdata = self.__polStr (key, "**SecureKey", REG_DWORD, "0")
+                    elif rest[3] == "PROTECT":
+                        hexdata = self.__polStr (key, "**SecureKey", REG_DWORD, "1")
                     else:
                         hexdata = self.__polStr (key, value, type, rest[3])
 
