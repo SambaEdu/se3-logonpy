@@ -39,7 +39,6 @@ groupsRdn       = se3db.getValue ("groupsRdn")
 path2BatFiles   = se3db.getValue ("path2BatFiles")
 path2Templates  = se3db.getValue ("path2Templates")
 xpPass          = se3db.getValue ("xppass")
-
 #########################
 # Get LDAP informations #
 #########################

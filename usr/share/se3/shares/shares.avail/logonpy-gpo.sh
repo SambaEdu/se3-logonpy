@@ -3,6 +3,7 @@
 #shares_WinXP: profiles
 #shares_Win2K: profiles
 #shares_Vista: profiles
+#shares_Seven: profiles
 #action: start
 #level: 01
 
@@ -35,7 +36,7 @@ flag=0
 for pathreg in /home/netlogon/*.reg; do
 	reg=${pathreg##*/}
 	if [ ! -f /home/profiles/$1/.$reg.lck ]; then
-	     sed -e "/^REGEDIT/d;s/HKEY_CURRENT_USER/HKEY_USERS\\\\$sid/g" /home/netlogon/$reg >> /home/netlogon/machine/$2/user.reg
+	     sed -e "/^REGEDIT/d;/^Windows Registry Editor Version 5.00/d;s/HKEY_CURRENT_USER/HKEY_USERS\\\\$sid/g" /home/netlogon/$reg >> /home/netlogon/machine/$2/user.reg
 	     touch /home/profiles/$1/.$reg.lck
 	     flag=1
 	echo on ajoute $reg
@@ -91,6 +92,8 @@ echo username=adminse3
 echo password=$xppass
 echo domain=$2
 )>/home/netlogon/machine/$2/gpoPASSWD
+chmod 700 /home/netlogon/machine/$2/gpoPASSWD
+sid=$(ldapsearch -xLLL uid=$1 sambaSID | grep sambaSID | sed "s/sambaSID: //")
 
 case $4 in 
 Vista|Seven)
@@ -162,7 +165,7 @@ then
 	exit 0
 fi
 
-if [ "$4" == "Vista" ]
+if [ "$4" == "Vista" ]||[ "$4" == "Seven" ]
 then
 	SHARECMD="net share C\$=C: /GRANT:adminse3,FULL"
 else
@@ -170,6 +173,6 @@ else
 fi
 sed -e s/%se3ip%/"$se3ip"/g /home/netlogon/EnableGPO.bat|sed -e s/%machine%/"$2"/g|sed -e s_%sharecmd%_"$SHARECMD"_g > /home/netlogon/machine/$2/EnableGPO.bat
 echo '\\'"$se3ip"'\netlogon\cpau.exe' -wait -lwop -hide -dec -file '\\'"$se3ip"'\netlogon\machine\gpo_helper.job' > /home/netlogon/machine/$2/fallback.bat
-echo '\\'"$se3ip"'\netlogon\machine\\'"$2\logon.bat" >>/home/netlogon/machine/$2/fallback.bat
+echo '\\'"$se3ip"'\netlogon\machine\'"$2"'\logon.bat' >>/home/netlogon/machine/$2/fallback.bat
 
 rm -f /home/netlogon/$2.lck
