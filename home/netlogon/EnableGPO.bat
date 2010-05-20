@@ -11,6 +11,8 @@ mkdir %SYSTEMDRIVE%\Windows\System32\GroupPolicy\User
 mkdir %SYSTEMDRIVE%\Windows\System32\GroupPolicy\User\Scripts
 mkdir %SYSTEMDRIVE%\Windows\System32\GroupPolicy\User\Scripts\logon
 
+cacls.exe "%SYSTEMDRIVE%\Windows\System32\GroupPolicy" /E /T /G "BUILTIN\Administrateurs":F /C >NUL
+
 del %SYSTEMDRIVE%\Windows\System32\GroupPolicy\User\registry.pol
 del %SYSTEMDRIVE%\Windows\System32\GroupPolicy\gpt.ini
 del %SYSTEMDRIVE%\Windows\System32\GroupPolicy\User\Scripts\scripts.ini
