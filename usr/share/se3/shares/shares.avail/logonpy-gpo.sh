@@ -13,15 +13,13 @@
 
 if [ -e /etc/se3/config_m.cache.sh ]; then
 	. /etc/se3/config_m.cache.sh
-	dom="$se3_domain"
-
 else
 
 	source /var/se3/Progs/install/installdll/confse3.ini
 	adminse3="$(echo $compte_admin_local|sed -e 's/\r//g')"
 	xppass="$(echo $password_admin_local|sed -e 's/\r//g')"
 	se3ip="$(echo $ip_se3|sed -e 's/\r//g')"
-	dom="$(echo $domaine|sed -e 's/\r//g')"
+	se3_domain="$(echo $domaine|sed -e 's/\r//g')"
 fi
 
 function deleteREG
@@ -49,40 +47,53 @@ fi
 
 function uploadGPO
 {
-smbclient  //"$3"/C$ -A /home/netlogon/machine/$2/gpoPASSWD << EOF
-	mkdir Windows\System32\GroupPolicy
-	mkdir Windows\System32\GroupPolicy\User
-	mkdir Windows\System32\GroupPolicy\User\Scripts
-	mkdir Windows\System32\GroupPolicy\User\Scripts\Logon
-	mkdir Windows\System32\GroupPolicy\User\Scripts\Logoff
-	mkdir Windows\System32\GroupPolicy\Machine
-	mkdir Windows\System32\GroupPolicy\Machine\Scripts
-	mkdir Windows\System32\GroupPolicy\Machine\Scripts\Startup
-	mkdir Windows\System32\GroupPolicy\Machine\Scripts\Shutdown
-	put /home/netlogon/machine/$2/user.pol Windows\System32\GroupPolicy\User\registry.pol
-	put /home/netlogon/machine/$2/logon.bat Windows\System32\GroupPolicy\User\Scripts\Logon\logon.bat
-	put /home/netlogon/machine/$2/logoff.bat Windows\System32\GroupPolicy\User\Scripts\Logoff\logoff.bat
-	put /home/netlogon/machine/$2/machine.pol Windows\System32\GroupPolicy\Machine\registry.pol
-	put /home/netlogon/machine/$2/startup.bat Windows\System32\GroupPolicy\Machine\Scripts\Startup\startup.bat
-	put /home/netlogon/machine/$2/shutdown.bat Windows\System32\GroupPolicy\Machine\Scripts\Shutdown\shutdown.bat
-	put /home/netlogon/machine/$2/gpt.ini Windows\System32\GroupPolicy\gpt.ini
-	put /home/netlogon/scriptsU.ini Windows\System32\GroupPolicy\User\Scripts\scripts.ini
-	put /home/netlogon/scriptsC.ini Windows\System32\GroupPolicy\Machine\Scripts\scripts.ini
-	put /var/se3/Docs/media/fonds_ecran/$1.$ext Windows\Web\Wallpaper\se3.$ext
-	put /home/netlogon/machine/$2/printers.vbs Windows\printers.vbs
+smbclient  //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD << EOF
+	mkdir System32\GroupPolicy
+	mkdir System32\GroupPolicy\User
+	mkdir System32\GroupPolicy\User\Scripts
+	mkdir System32\GroupPolicy\User\Scripts\Logon
+	mkdir System32\GroupPolicy\User\Scripts\Logoff
+	mkdir System32\GroupPolicy\Machine
+	mkdir System32\GroupPolicy\Machine\Scripts
+	mkdir System32\GroupPolicy\Machine\Scripts\Startup
+	mkdir System32\GroupPolicy\Machine\Scripts\Shutdown
+	put /home/netlogon/machine/$2/user.pol System32\GroupPolicy\User\registry.pol
+	put /home/netlogon/machine/$2/logon.bat System32\GroupPolicy\User\Scripts\Logon\logon.bat
+	put /home/netlogon/machine/$2/logoff.bat System32\GroupPolicy\User\Scripts\Logoff\logoff.bat
+	put /home/netlogon/machine/$2/machine.pol System32\GroupPolicy\Machine\registry.pol
+	put /home/netlogon/machine/$2/startup.bat System32\GroupPolicy\Machine\Scripts\Startup\startup.bat
+	put /home/netlogon/machine/$2/shutdown.bat System32\GroupPolicy\Machine\Scripts\Shutdown\shutdown.bat
+	put /home/netlogon/machine/$2/gpt.ini System32\GroupPolicy\gpt.ini
+	put /home/netlogon/scriptsU.ini System32\GroupPolicy\User\Scripts\scripts.ini
+	put /home/netlogon/scriptsC.ini System32\GroupPolicy\Machine\Scripts\scripts.ini
+	put /var/se3/Docs/media/fonds_ecran/$1.$ext Web\Wallpaper\se3.$ext
+	put /home/netlogon/machine/$2/printers.vbs printers.vbs
 EOF
 	return $?
 }
 
 function setACL
 {
-	smbcacls //"$3"/C$ -A /home/netlogon/machine/$2/gpoPASSWD "/Windows/System32/Grouppolicy/User/registry.pol" -S "ACL:adminse3:ALLOWED/0/FULL,ACL:SYSTEM:ALLOWED/0/FULL,ACL:$dom\\$1:ALLOWED/0/READ"
-	smbcacls //"$3"/C$ -A /home/netlogon/machine/$2/gpoPASSWD  "/Windows/System32/Grouppolicy/User/Scripts/scripts.ini" -S "ACL:adminse3:ALLOWED/0/FULL,ACL:SYSTEM:ALLOWED/0/FULL,ACL:$dom\\$1:ALLOWED/0/READ"
-	smbcacls //"$3"/C$  -A /home/netlogon/machine/$2/gpoPASSWD "/Windows/System32/Grouppolicy/User/Scripts/Logon/logon.bat" -S "ACL:adminse3:ALLOWED/0/FULL,ACL:SYSTEM:ALLOWED/0/FULL,ACL:$dom\\$1:ALLOWED/0/READ"
-	smbcacls //"$3"/C$  -A /home/netlogon/machine/$2/gpoPASSWD "/Windows/System32/Grouppolicy/User/Scripts/Logoff/logoff.bat" -S "ACL:adminse3:ALLOWED/0/FULL,ACL:SYSTEM:ALLOWED/0/FULL,ACL:$dom\\$1:ALLOWED/0/READ"
-	smbcacls //"$3"/C$  -A /home/netlogon/machine/$2/gpoPASSWD "/Windows/System32/Grouppolicy/gpt.ini" -S "ACL:adminse3:ALLOWED/0/FULL,ACL:$dom\\$1:ALLOWED/0/READ,ACL:SYSTEM:ALLOWED/0/FULL,ACL:administrateurs:ALLOWED/0/FULL"
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User/registry.pol" -S "ACL:adminse3:ALLOWED/0/FULL,ACL:SYSTEM:ALLOWED/0/FULL,ACL:$se3_domain\\$1:ALLOWED/0/READ" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts/scripts.ini" -S "ACL:adminse3:ALLOWED/0/FULL,ACL:SYSTEM:ALLOWED/0/FULL,ACL:$se3_domain\\$1:ALLOWED/0/READ" || return $?
+	smbcacls //"$3"/ADMIN$  -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User/Scripts/Logon/logon.bat" -S "ACL:adminse3:ALLOWED/0/FULL,ACL:SYSTEM:ALLOWED/0/FULL,ACL:$se3_domain\\$1:ALLOWED/0/READ" || return $?
+	smbcacls //"$3"/ADMIN$  -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User/Scripts/Logoff/logoff.bat" -S "ACL:adminse3:ALLOWED/0/FULL,ACL:SYSTEM:ALLOWED/0/FULL,ACL:$se3_domain\\$1:ALLOWED/0/READ" || return $?
+	smbcacls //"$3"/ADMIN$  -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/gpt.ini" -S "ACL:adminse3:ALLOWED/0/FULL,ACL:$se3_domain\\$1:ALLOWED/0/READ,ACL:SYSTEM:ALLOWED/0/FULL,ACL:administrateurs:ALLOWED/0/FULL" || return $?
 	rm -f /home/netlogon/machine/$2/fallback.bat
 	rm -f /home/netlogon/machine/$2/EnableGPO.bat
+}
+
+function EnableGPO # $netbiosname $arch
+{
+    if [ "$2" == "Vista" ]||[ "$2" == "Seven" ]
+    then
+    	SHARECMD="net share ADMIN\$=C: /GRANT:adminse3,FULL"
+    else
+	    SHARECMD="net share ADMIN\$=C:"
+    fi
+    sed -e s/%se3ip%/"$se3ip"/g /home/netlogon/EnableGPO.bat|sed -e s/%machine%/"$1"/g|sed -e s_%sharecmd%_"$SHARECMD"_g > /home/netlogon/machine/$1/EnableGPO.bat
+    echo '\\'"$se3ip"'\netlogon\cpau.exe' -wait -lwop -hide -dec -file '\\'"$se3ip"'\netlogon\machine\gpo_helper.job' > /home/netlogon/machine/$1/fallback.bat
+    echo '\\'"$se3ip"'\netlogon\machine\'"$1"'\logon.bat' >>/home/netlogon/machine/$1/fallback.bat
 }
 
 [ ! -d /home/netlogon/machine/$2 ] && mkdir -p /home/netlogon/machine/$2
@@ -119,7 +130,7 @@ then
 		rm -f /home/netlogon/$2.lck
 		exit 1
 	fi
-	smbcacls //"$3"/C$ -A /home/netlogon/machine/$2/gpoPASSWD "/Windows/System32/Grouppolicy/User/Scripts/Logon/logon.bat"  2>/dev/null |grep ACL|grep $1:  >/dev/null
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User/Scripts/Logon/logon.bat"  2>/dev/null |grep ACL|grep $1:  >/dev/null
 	if [ "$?" == "0" ]
 	then
 		# GPO already in place
@@ -154,25 +165,19 @@ else
 fi
 
 # Try to upload GPO
-# Sometime, Windows XP isn't ready to accept connexions on C$ (just after boot)
+# Sometime, Windows XP isn't ready to accept connexions on ADMIN$ (just after boot)
 /usr/share/se3/sbin/tcpcheck 20 $3:445
 
 uploadGPO $1 $2 $3
 if [ "$?" == "0" ]
 then
 	setACL $1 $2 $3
-	rm -f /home/netlogon/$2.lck
-	exit 0
+	if [ "$?" == "1" ]
+	then
+	    EnableGPO $2 $4
+	fi
+else	    
+    EnableGPO $2 $4
 fi
-
-if [ "$4" == "Vista" ]||[ "$4" == "Seven" ]
-then
-	SHARECMD="net share C\$=C: /GRANT:adminse3,FULL"
-else
-	SHARECMD="net share C\$=C:"
-fi
-sed -e s/%se3ip%/"$se3ip"/g /home/netlogon/EnableGPO.bat|sed -e s/%machine%/"$2"/g|sed -e s_%sharecmd%_"$SHARECMD"_g > /home/netlogon/machine/$2/EnableGPO.bat
-echo '\\'"$se3ip"'\netlogon\cpau.exe' -wait -lwop -hide -dec -file '\\'"$se3ip"'\netlogon\machine\gpo_helper.job' > /home/netlogon/machine/$2/fallback.bat
-echo '\\'"$se3ip"'\netlogon\machine\'"$2"'\logon.bat' >>/home/netlogon/machine/$2/fallback.bat
-
 rm -f /home/netlogon/$2.lck
+
