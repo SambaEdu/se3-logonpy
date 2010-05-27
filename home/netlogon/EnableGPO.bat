@@ -3,7 +3,7 @@ netsh firewall set portopening protocol=TCP port=139 name=se3_139 mode=ENABLE sc
 netsh firewall set portopening protocol=UDP port=138 name=se3_138 mode=ENABLE scope=CUSTOM addresses=%se3ip%/255.255.255.255
 netsh firewall set portopening protocol=TCP port=445 name=se3_445 mode=ENABLE scope=CUSTOM addresses=%se3ip%/255.255.255.255
 %sharecmd%
-mkdir %SYSTEMROOT%\Windows\System32\GroupPolicy
+mkdir %SYSTEMROOT%\System32\GroupPolicy
 mkdir %SYSTEMROOT%\System32\GroupPolicy\Machine
 mkdir %SYSTEMROOT%\System32\GroupPolicy\Machine\Scripts
 mkdir %SYSTEMROOT%\System32\GroupPolicy\Machine\Scripts\Startup
