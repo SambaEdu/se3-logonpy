@@ -2,6 +2,7 @@ netsh firewall set portopening protocol=UDP port=137 name=se3_137 mode=ENABLE sc
 netsh firewall set portopening protocol=TCP port=139 name=se3_139 mode=ENABLE scope=CUSTOM addresses=%se3ip%/255.255.255.255
 netsh firewall set portopening protocol=UDP port=138 name=se3_138 mode=ENABLE scope=CUSTOM addresses=%se3ip%/255.255.255.255
 netsh firewall set portopening protocol=TCP port=445 name=se3_445 mode=ENABLE scope=CUSTOM addresses=%se3ip%/255.255.255.255
+reg delete HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters /v AutoShareWks /f 2>NUL
 %sharecmd%
 mkdir %SYSTEMROOT%\System32\GroupPolicy
 mkdir %SYSTEMROOT%\System32\GroupPolicy\Machine
@@ -10,9 +11,7 @@ mkdir %SYSTEMROOT%\System32\GroupPolicy\Machine\Scripts\Startup
 mkdir %SYSTEMROOT%\System32\GroupPolicy\User
 mkdir %SYSTEMROOT%\System32\GroupPolicy\User\Scripts
 mkdir %SYSTEMROOT%\System32\GroupPolicy\User\Scripts\logon
-
 cacls.exe "%SYSTEMROOT%\System32\GroupPolicy" /E /T /G "BUILTIN\Administrateurs":F /C >NUL
-
 del %SYSTEMROOT%\System32\GroupPolicy\User\registry.pol
 del %SYSTEMROOT%\System32\GroupPolicy\gpt.ini
 del %SYSTEMROOT%\System32\GroupPolicy\User\Scripts\scripts.ini
