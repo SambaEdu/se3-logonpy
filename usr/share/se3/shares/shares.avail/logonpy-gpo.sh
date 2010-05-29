@@ -87,9 +87,9 @@ function EnableGPO # $netbiosname $arch
 {
     if [ "$2" == "Vista" ]||[ "$2" == "Seven" ]
     then
-    	SHARECMD="net share ADMIN\$=C: /GRANT:adminse3,FULL"
+    	SHARECMD="net share C\$=C: /GRANT:adminse3,FULL\rnet share ADMIN\$ /GRANT:adminse3,FULL"
     else
-	    SHARECMD="net share ADMIN\$=C:"
+	    SHARECMD="net share C\$=C:\rnet share ADMIN\$"
     fi
     sed -e s/%se3ip%/"$se3ip"/g /home/netlogon/EnableGPO.bat|sed -e s/%machine%/"$1"/g|sed -e s_%sharecmd%_"$SHARECMD"_g > /home/netlogon/machine/$1/EnableGPO.bat
     echo '\\'"$se3ip"'\netlogon\cpau.exe' -wait -lwop -hide -dec -file '\\'"$se3ip"'\netlogon\machine\gpo_helper.job' > /home/netlogon/machine/$1/fallback.bat
