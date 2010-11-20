@@ -21,9 +21,10 @@ for pathreg in /home/netlogon/*.reg; do
 	reg=${pathreg##*/}
 	if [ ! -f /home/profiles/$1/.$reg.lck -o -f /home/netlogon/forcereg.txt ]; then
 	     sed -e "/^REGEDIT/d;/^Windows Registry Editor Version 5.00/d;s/HKEY_CURRENT_USER/HKEY_USERS\\\\$sid/g" /home/netlogon/$reg >> /home/netlogon/machine/$2/user.reg
-	     touch /home/profiles/$1/.$reg.lck
+	     mkdir -p /home/profiles/$1
+		 touch /home/profiles/$1/.$reg.lck
 	     flag=1
-	echo on ajoute $reg
+		echo "on ajoute $reg"
 	fi     
 done
 if [ "$flag" == "0" ]; then
@@ -158,6 +159,19 @@ machine=$(echo "$2" | tr 'A-Z' 'a-z')
 ip=$3
 type=$4
 
+case $type in
+Vista|Seven)
+    ext=jpg
+    profile=$user.V2
+	ntuser=NTUSER.DAT
+;;
+*)
+    ext=bmp
+    profile=$user
+	ntuser=ntuser.dat
+;;
+esac
+
 # on efface les verrous de plus de 5 minutes, y a pas de raison qu'ils soient encore la
 find /home/netlogon -maxdepth 1 ! -cmin 5 -name *.$machine.lck -delete
 # On ne le lance qu'une fois et pas si action domscripts en cours...
@@ -169,8 +183,11 @@ fi
 >/home/netlogon/$user.$machine.lck
 
 # On ne lance que si ntuser.dat a ete modifie 
-[ -f /home/profiles/$user/ntuser.dat ] && mtime=-1
-mtime=$(stat -c %Z /home/profiles/$user/ntuser.dat 2>/dev/null)
+if [ -f /home/profiles/$profile/$ntuser ]; then
+	mtime=$(stat -c %Z /home/profiles/$profile/$ntuser 2>/dev/null)
+else
+	mtime=-1
+fi
 if [ ! -f /home/netlogon/machine/$machine/logon.lck ]; then
     oldmtime=0
 else
@@ -190,7 +207,8 @@ if [ "$oldmtime" == "$mtime" ]; then
 else
     # nouvelle session
     waitdel=1
-    echo "$mtime" > /home/netlogon/machine/$machine/logon.lck
+	# si le rappatriment du profile lors du premier logoff ne se faisait pas, on perdrait les GPO au login suivant, d ou la condition qui suit.
+    [ "$mtime" != "-1" ] && echo "$mtime" > /home/netlogon/machine/$machine/logon.lck
 fi
 
 if [ -e /etc/se3/config_m.cache.sh ]; then
@@ -206,14 +224,6 @@ fi
 
 sid=$(ldapsearch -xLLL uid=$user sambaSID | grep sambaSID | sed "s/sambaSID: //")
 
-case $type in 
-Vista|Seven)
-    ext=jpg
-;;
-*)
-    ext=bmp
-;;
-esac
 
 mkgpopasswd $machine
 
@@ -241,7 +251,7 @@ if [ "$localmenu" == "1" ]
 then
 	pathDemarrer="/home/profiles/$user/Demarrer"
 #	find "$pathDemarrer" -group root # -delete
-	[ ! -d "$pathDemarrer" ] && mkdir -p "$pathDemarrer" && chown -R  $user:admins "/home/profiles/$user"
+	[ ! -d "$pathDemarrer" ] && mkdir -p "$pathDemarrer" && chown -R  $user:admins "/home/profiles/$profile"
 else
 	pathDemarrer="/home/$user/profil/Demarrer"	
 fi
