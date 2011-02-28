@@ -1,0 +1,6 @@
+#!/bin/sh -e
+# Automatically added by dh_installdocs
+if [ "$1" = "remove" ]; then
+	/usr/share/se3/sbin/clean-logonpy.sh
+fi
+# End automatically added section
