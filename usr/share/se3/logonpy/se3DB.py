@@ -64,43 +64,76 @@ class se3DB:
             wallModule = True
 
         cursor = self.__db.cursor()
+        query = "Select Intitule,corresp.CleID,corresp.valeur,genre,OS,antidote,type,chemin,restrictions.valeur,restrictions.priorite FROM corresp,restrictions WHERE corresp.CleID = restrictions.cleID AND OS!=\"Win9x\" AND ( "
+        i = 0
         for template in templates:
-            cursor.execute ("SELECT CleID, valeur from restrictions where groupe=%s", template)
-            for result in cursor.fetchall ():
-                results[result[0]] = result[1]
-
-        for key in results.keys():
-            cursor.execute ("SELECT Chemin, Genre, OS FROM corresp where CleID='%s'\
-                                    and OS!=\"Win9x\"", key)
-            row2 = cursor.fetchone ()
-
-            if row2 != None:
-                # Disable wallpaper key if wall module active
-                if wallModule:
-                    if not row2[0] in "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\ClassicShell" \
-                                      "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\ForceActiveDesktopOn" \
-                                      "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop\NoHTMLWallpaper":
-                    
-                        rest.append ((row2[0], row2[1], row2[2], results[key]))
-                    if row2[0] == "HKEY_CURRENT_USER\Control Panel\Desktop\TileWallpaper":
-                        tileWallSet = True
-                        rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\WallpaperStyle",\
-                              "REG_SZ", "2000,XP,Vista,Seven", results[key]))
-                else:
-                    rest.append ((row2[0], row2[1], row2[2], results[key]))
+            print(template)
+            if i == 0 :
+                query += " groupe=\"" + template + "\""
+            else:
+                query += " OR groupe=\"" + template +"\""
+            i += 1
+        query += " ) GROUP BY CleID,restrictions.valeur ORDER BY priorite ASC"
+#        print (query)
+        cursor.execute (query)
+        for row in cursor.fetchall ():
+            rest.append ((row[7], row[3], row[4], row[8]))
+#
+#            for result in cursor.fetchall ():
+#                results[result[0]] = result[1]
+#
+#        for key in results.keys():
+#            cursor.execute ("SELECT Chemin, Genre, OS FROM corresp where CleID='%s'\
+#                                    and OS!=\"Win9x\"", key)
+#            row2 = cursor.fetchone ()
+#
+#            if row2 != None:
+#                # Disable wallpaper key if wall module active
+#                if wallModule:
+#                    if not row2[0] in "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\ClassicShell" \
+#                                      "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\ForceActiveDesktopOn" \
+#                                      "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop\NoHTMLWallpaper":
+#
+#                        rest.append ((row2[0], row2[1], row2[2], results[key]))
+#                    if row2[0] == "HKEY_CURRENT_USER\Control Panel\Desktop\TileWallpaper":
+#                        tileWallSet = True
+#                        rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\WallpaperStyle",\
+#                              "REG_SZ", "2000,XP,Vista,Seven", results[key]))
+#                else:
+#                    rest.append ((row2[0], row2[1], row2[2], results[key]))
 
         cursor.close ()
 
+        if self.getValue ("localmenu") == "1":
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Programs', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven','%USERPROFILE%\Demarrer\Programmes'))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Start Menu', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven','%USERPROFILE%\Demarrer'))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Startup', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', '%USERPROFILE%\Demarrer\Programmes\Démarrage'.decode('utf8').encode('iso-8859-15')))
+        else:
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Programs', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\Demarrer\Programmes'))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Start Menu', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\Demarrer'))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Startup', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\Demarrer\Programmes\Démarrage'.decode('utf8').encode('iso-8859-15')))
+
+        if self.getValue ("mes_docs"):
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Personal', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', self.getValue ("mes_docs")))
+        else:
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Personal', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\Docs'))
+
         if self.getValue ("corbeille") == "1":
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{00000000-0000-0000-0000-000000210979}\\",\
-                         "REG_SZ", "2000,XP,Vista,Seven", "Corbeille R�seau"))
+                         "REG_SZ", "2000,XP,Vista,Seven", "Corbeille Réseau"))
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{00000000-0000-0000-0000-000000210979}\\",\
-                         "REG_SZ", "2000,XP,Vista,Seven", "Corbeille R�seau"))
+                         "REG_SZ", "2000,XP,Vista,Seven", "Corbeille Réseau"))
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\NonEnum\{00000000-0000-0000-0000-000000210979}",\
                          "REG_DWORD", "2000,XP,Vista,Seven", "0"))
         else:
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\NonEnum\{00000000-0000-0000-0000-000000210979}",\
                          "REG_DWORD", "2000,XP,Vista,Seven", "1"))
+
+        if self.getValue ("hide_logon") == "0":
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\HideLogonScripts', 'REG_DWORD', 'XP', '0'))
+        else:
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\HideLogonScripts', 'REG_DWORD', 'XP', '1'))
+
         if wallModule:
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\ClassicShell",\
                          "REG_DWORD", "Vista,Seven", "SUPPR"))

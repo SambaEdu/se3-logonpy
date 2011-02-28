@@ -253,7 +253,8 @@ then
 #	find "$pathDemarrer" -group root # -delete
 	[ ! -d "$pathDemarrer" ] && mkdir -p "$pathDemarrer" && chown -R  $user:admins "/home/profiles/$profile"
 else
-	pathDemarrer="/home/$user/profil/Demarrer"	
+	pathDemarrer="/home/$user/profil/Demarrer"
+	chown $user:admins $pathDemarrer/Programmes
 fi
 /usr/share/se3/logonpy/logon.py $user $machine $type
 

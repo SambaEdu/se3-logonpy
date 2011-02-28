@@ -4,17 +4,19 @@ from se3Utils import *
 
 class se3Logon:
 
-    def __init__ (self, path2BatFiles, path2Templates, user, computer, master, arch):
+    def __init__ (self, path2BatFiles, path2Templates, user, computer, master, arch, urlse3):
         """
             Open logon bat, some initializations
         """
         try: 
-            self.__logonU = open ("%s/machine/%s/logon.bat" % (path2BatFiles, computer), 'w')
-            self.__logonC = open ("%s/machine/%s/startup.bat" % (path2BatFiles, computer), 'w')
-            self.__logoffU = open ("%s/machine/%s/logoff.bat" % (path2BatFiles, computer), 'w')
-            self.__logoffC = open ("%s/machine/%s/shutdown.bat" % (path2BatFiles, computer), 'w')
-            self.__logonU.write ("cscript C:\Windows\printers.vbs\r\n")
-            self.__logonC.write ("cscript C:\Windows\printers.vbs\r\n")
+            self.__logonU = open ("%s/machine/%s/logon.cmd" % (path2BatFiles, computer), 'w')
+            self.__logonC = open ("%s/machine/%s/startup.cmd" % (path2BatFiles, computer), 'w')
+            self.__logoffU = open ("%s/machine/%s/logoff.cmd" % (path2BatFiles, computer), 'w')
+            self.__logoffC = open ("%s/machine/%s/shutdown.cmd" % (path2BatFiles, computer), 'w')
+            self.__logonU.write ("cscript %SYSTEMROOT%\Printers.vbs\r\n")
+            self.__logonC.write ("cscript %SYSTEMROOT%\Printers.vbs\r\n")
+            self.__logonC.write ("echo Machine ok>%SYSTEMROOT%\System32\Grouppolicy\Se3.log\r\n")
+            self.__logoffC.write ("del /s /f /q %SYSTEMROOT%\System32\Grouppolicy\Se3.log\r\n")
 
             self.__tplPath = path2Templates
             self.__batPath = path2BatFiles
@@ -22,11 +24,11 @@ class se3Logon:
             self.__computer = computer
             self.__master = master
             self.__arch = arch
+            self.__urlse3 = urlse3
 
         except OSError:
             print "Can't create %s/%s/.bat" % (computer, user)
             sys.exit (1)
-			
 
     def __del__ (self):
         """
@@ -34,21 +36,25 @@ class se3Logon:
         """
         try:
             if not os.access ("%s/machine/%s/gpt.ini" % (self.__batPath, self.__computer), os.F_OK):
-	            self.__logonU.write ("gpupdate /force\r\n")
+                    self.__logonU.write ("gpupdate /force\r\n")
             else:
                     self.__logonU.write ("gpupdate /Target:computer /force\r\n")
             self.__logonC.write ("reg add \"HKEY_USERS\.DEFAULT\Control Panel\Keyboard\" /v InitialKeyboardIndicators /d 2 /f\r\n") # not working with gpo
 
             if self.__arch == "Vista":
                 # Remove public folder from explorer
-                self.__logonC.write ("reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\explorer\Desktop\NameSpace\{4336a54d-038b-4685-ab02-99bb52d3fb8b} /f\r\n")
-                self.__logonC.write ("reg delete HKEY_LOCAL_MACHINE\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\explorer\Desktop\NameSpace\{4336a54d-038b-4685-ab02-99bb52d3fb8b} /f\r\n")
-                self.__logonC.write ("reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\explorer\Desktop\NameSpace\{59031a47-3f72-44a7-89c5-5595fe6b30ee} /f\r\n")
-                self.__logonC.write ("reg delete HKEY_LOCAL_MACHINE\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\explorer\Desktop\NameSpace\{59031a47-3f72-44a7-89c5-5595fe6b30ee} /f\r\n")
-                self.__logonC.write ("reg delete HKEY_LOCAL_MACHINE\Software\Wpkg\running /f\r\n")
+                self.__logonC.write ("reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{4336a54d-038b-4685-ab02-99bb52d3fb8b} /f\r\n")
+                self.__logonC.write ("reg delete HKEY_LOCAL_MACHINE\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{4336a54d-038b-4685-ab02-99bb52d3fb8b} /f\r\n")
+                self.__logonC.write ("reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{59031a47-3f72-44a7-89c5-5595fe6b30ee} /f\r\n")
+                self.__logonC.write ("reg delete HKEY_LOCAL_MACHINE\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{59031a47-3f72-44a7-89c5-5595fe6b30ee} /f\r\n")
+                self.__logonC.write ("reg delete HKEY_LOCAL_MACHINE\Software\Wpkg\Running /f\r\n")
 
-            self.__logoffC.write ("del /Q /S /F %SYSTEMDRIVE%\windows\system32\GroupPolicy\User\r\n")
+            self.__logonC.write ("del /Q /S /F %SYSTEMROOT%\System32\GroupPolicy\User\r\n")
+            self.__logoffC.write ("del /Q /S /F %SYSTEMROOT%\System32\GroupPolicy\User\r\n")
             self.__logoffU.write ("del /Q /S /F %USERPROFILE%\Application Data\Microsoft\Wallpaper1.bmp\r\n")
+            self.__logoffU.write ("del /Q /S /F %SYSTEMROOT%\System32\GroupPolicy\User\Registry.pol\r\n")
+            self.__logoffU.write ("del /Q /S /F %SYSTEMROOT%\System32\GroupPolicy\User\Scripts\Logon\Logon.cmd\r\n")
+            self.__logoffU.write ("del /Q /S /F %SYSTEMROOT%\Web\Wallpaper\Se3.*\r\n")
             self.__logonU.close ()
             self.__logonC.close ()
             self.__logoffU.write ("\r\n")
@@ -57,7 +63,7 @@ class se3Logon:
             self.__logoffC.close ()
             
         except OSError:
-           print "Can't write %s/%s.bat" % (self.__user, self.__computer)
+           print "Can't write %s/%s.cmd" % (self.__user, self.__computer)
 
 
     def winsAdd (self):
@@ -68,7 +74,7 @@ class se3Logon:
             self.__logonC.write ("nbtstat -RR\r\n")
 
         except OSError:
-            print "Can't write admin %s.bat" %  self.__computer
+            print "Can't write admin %s.cmd" %  self.__computer
 
 
     def addFirefoxAutoConfig (self):
@@ -76,17 +82,34 @@ class se3Logon:
             Add firefox autconfig files to logon script
         """
         try:
-            self.__logonC.write ("cacls C:\Windows\System32\GroupPolicy\User\\registry.pol /E /G adminse3:F\r\n")
-            self.__logonC.write ("cacls C:\Windows\System32\GroupPolicy\User\Scripts\scripts.ini /E /G adminse3:F\r\n")
-            self.__logonC.write ("cacls C:\Windows\System32\GroupPolicy\User\Scripts\Logon\logon.bat /E /G adminse3:F\r\n")
-            self.__logonC.write ("cacls C:\Windows\System32\GroupPolicy\User\Scripts\Logoff\logoff.bat /E /G adminse3:F\r\n")
+#           self.__logonC.write ("cacls %SYSTEMROOT%\System32\GroupPolicy\User\\registry.pol /E /G adminse3:F\r\n")
+#            self.__logonC.write ("cacls %SYSTEMROOT%\System32\GroupPolicy\User\Scripts\scripts.ini /E /G adminse3:F\r\n")
+#            self.__logonC.write ("cacls %SYSTEMROOT%\System32\GroupPolicy\User\Scripts\Logon\logon.cmd /E /G adminse3:F\r\n")
+#            self.__logonC.write ("cacls %SYSTEMROOT%\System32\GroupPolicy\User\Scripts\Logoff\logoff.cmd /E /G adminse3:F\r\n")
             self.__logonC.write ("Set FIREFOXCFG=%ProgramFiles%\\Mozilla Firefox\\firefox.cfg\r\n")
             self.__logonC.write ("Set ALLJS=%ProgramFiles%\\Mozilla Firefox\\greprefs\\all.js\r\n")
             self.__logonC.write ("echo //BEGIN CE prefs >\"%FIREFOXCFG%\"\r\n")
-            self.__logonC.write ("echo lockPref(\"autoadmin.global_config_url\", \"http://%s:909/firefox-profile.php?username=\" + getenv(\"USERNAME\") + \"&computername=\" + getenv(\"COMPUTERNAME\") + \"&userdomain=\" + getenv(\"USERDOMAIN\") + \"?\"); >>\"%%FIREFOXCFG%%\"\r\n" % self.__master)
+            self.__logonC.write ("echo lockPref(\"autoadmin.global_config_url\", \"%s/firefox-profile.php?username=\" + getenv(\"USERNAME\") + \"&computername=\" + getenv(\"COMPUTERNAME\") + \"&userdomain=\" + getenv(\"USERDOMAIN\") + \"?\"); >>\"%%FIREFOXCFG%%\"\r\n" % self.__urlse3)
             self.__logonC.write ("find \"general.config.obscure_value', 0\" \"%ALLJS%\" || echo pref('general.config.obscure_value', 0); >> \"%ALLJS%\"\r\n")
             self.__logonC.write ("find \"general.config.filename\" \"%ALLJS%\" || echo pref('general.config.filename', 'firefox.cfg'); >> \"%ALLJS%\"\r\n")
             self.__logonC.write ("net time \\\\%s\r\n" % self.__master)
+        except: pass
+
+
+    def addgetGPOversion (self):
+        """
+            get GPO version from registry and write it to gpt.ini
+        """
+        try:
+            self.__logonC.write ("for /f \"tokens=2 delims=x\" %%a in ('reg query \"HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Group Policy\\State\\Machine\\GPO-List\\0\" /v Version ^| findstr REG_DWORD') do set /a VERSION=0x%%a\r\n")
+            self.__logonC.write ("if \"%VERSION%\"==\"\" set VERSION=65537\r\n")           
+            self.__logonC.write ("echo [general]>%SYSTEMROOT%\\System32\\GroupPolicy\\gpt.ini\r\n")
+            self.__logonC.write ("echo Version=%VERSION%>>%SYSTEMROOT%\\System32\\GroupPolicy\\gpt.ini\r\n")
+            self.__logonC.write ("echo gPCUserExtensionNames=[{35378EAC-683F-11D2-A89A-00C04FBBCFA2}{0F6B957E-509E-11D1-A7CC-0000F87571E3}][{42B5FAAE-6536-11D2-AE5A-0000F87571E3}{40B66650-4972-11D1-A7CA-0000F87571E3}]>>%SYSTEMROOT%\\System32\\GroupPolicy\\gpt.ini\r\n")
+            self.__logonC.write ("echo gPCMachineExtensionNames=[{35378EAC-683F-11D2-A89A-00C04FBBCFA2}{0F6B957D-509E-11D1-A7CC-0000F87571E3}][{42B5FAAE-6536-11D2-AE5A-0000F87571E3}{40B6664F-4972-11D1-A7CA-0000F87571E3}]>>%SYSTEMROOT%\\System32\\GroupPolicy\\gpt.ini\r\n")
+            self.__logonC.write ("time /T >> %SYSTEMDRIVE%\\netinst\\logs\\domscripts.txt\r\n")
+            self.__logonC.write ("echo GPO startup ok>> %SYSTEMDRIVE%\\netinst\\logs\\domscripts.txt\r\n")
+            self.__logonC.write ("echo %VERSION%>> %SYSTEMDRIVE%\\netinst\\logs\\domscripts.txt\r\n")
         except: pass
 
 
@@ -169,4 +192,4 @@ class se3Logon:
                 self.__logonU.writelines ("\\\\%s\Netlogon\Cpau.exe -wait -lwop -hide -dec -file \\\\%s\Netlogon\Machine\Reg_helper.job\r\n" \
                 % (self.__master, self.__master))
         except OSError:
-            print "Can't write reg file for user %s and computer %s logon.bat" % (self.__user, self.__computer)
+            print "Can't write reg file for user %s and computer %s logon.cmd" % (self.__user, self.__computer)

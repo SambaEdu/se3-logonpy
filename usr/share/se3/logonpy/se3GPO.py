@@ -34,13 +34,14 @@ folder_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Exp
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\PrintHood', 'REG_EXPAND_SZ', 'Vista', 'K:\profil\\appdata\PrintHood'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Recent', 'REG_EXPAND_SZ', 'Vista', 'K:\profil\\appdata\Recent'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\SendTo', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven','%USERPROFILE%\SendTo'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Templates', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\\appdata\Templates'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Programs', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\Demarrer\Programmes'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Start Menu', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\Demarrer'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Startup', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\Demarrer\Programmes\Démarrage'.decode('utf8').encode('iso-8859-15'))]
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Templates', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\\appdata\Templates')]
+
 
 default_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\HideLegacyLogonScripts', 'REG_DWORD', 'XP', '1'),
                 ('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\TcpNumConnections', 'REG_DWORD', '2000,XP,Vista,Seven', '5000'),
+                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableChangePassword', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
+                ('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters\DisablePasswordChange', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
+                ('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\ForceGuest', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\DeleteRoamingCache', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System\DeleteRoamingCache', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\RunLogonScriptSync', 'REG_DWORD', 'Vista,Seven', '0'),
@@ -72,7 +73,6 @@ default_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Po
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\\abfc2519-3608-4c2a-94ea-171b0ed546ab\ACSettingIndex', 'REG_DWORD', 'Vista', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\\abfc2519-3608-4c2a-94ea-171b0ed546ab\DCSettingIndex', 'REG_DWORD', 'Vista', '0'),
                 ('HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\System\ExcludeProfileDirs', 'REG_SZ', '2000,XP,Vista,Seven', 'Application Data;Temporary Internet Files;Historique;Temp;Credentials;Media Player;Windows Media;SystemCertificates;CrypnetUrlCache;Internet Explorer'),
-                ('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters\DisablePasswordChange', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Windows NT\Printers\KMPrintersAreBlocked', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
                 ('HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint\Restricted', 'REG_DWORD', 'XP,Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{42B5FAAE-6536-11d2-AE5A-0000F87571E3}\NoGPOListChanges', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
@@ -83,7 +83,7 @@ default_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Po
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}\NoSlowLink', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System\SlowLinkDetectEnabled', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\HideFastUserSwitching', 'REG_DWORD', 'Vista', '1'),
-                ('HKEY_CURRENT_USER\Control Panel\Colors\Background', 'REG_SZ', 'XP', '0 0 0'),
+                ('HKEY_CURRENT_USER\Control Panel\Colors\Background', 'REG_SZ', 'XP', '58 110 165'),
                 ('HKEY_CURRENT_USER\Control Panel\Colors\MenuHilight', 'REG_SZ', 'XP', '49 106 197'),
                 ('HKEY_CURRENT_USER\Control Panel\Colors\Hilight', 'REG_SZ', 'XP', '49 106 197'),
                 ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\ThemeManager\ColorName', 'REG_SZ', 'XP', 'NormalColor'),

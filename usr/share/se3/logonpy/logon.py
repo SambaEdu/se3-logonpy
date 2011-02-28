@@ -39,6 +39,7 @@ groupsRdn       = se3db.getValue ("groupsRdn")
 path2BatFiles   = se3db.getValue ("path2BatFiles")
 path2Templates  = se3db.getValue ("path2Templates")
 xpPass          = se3db.getValue ("xppass")
+urlse3		    = se3db.getValue ("urlse3")
 #########################
 # Get LDAP informations #
 #########################
@@ -85,31 +86,50 @@ try:
         os.remove ("/home/%s/profil/delHive" % user)
 except: pass
 
-templates=["base"] + groups + parcs + [computer] + [user] + ["%s@@%s" % (user, computer)]
-for parc in parcs:
-    templates += (["%s@@%s" % (user, parc)])
+templates=["base"] + groups + parcs + [computer] + [user]
 
-for group in groups:
-    templates += (["%s@@%s" % (group, computer)])
-    for parc in parcs:
-        templates += (["%s@@%s" % (group, parc)])
+##########################
+# Desktop and Start Menu #
+##########################
+template = se3Templates (path2Templates, path2BatFiles, user)
+
+template.cleanDesktop ()
+template.cleanStartMenu ()
+
+templatesdirs = template.getTemplates ()
+restgroupes = []
+for dir in templatesdirs:
+    for group in dir.split ('@@'):
+        for templ in templates:
+            if templ == group :
+                test = 1
+                break
+            else:
+                test = 0
+        if test == 0 :
+            break
+    if test == 1 :
+        restgroupes.append (dir)
+        template.createDesktop ([dir])
+        template.createStartMenu ([dir])
 
 #######################
 # User logon creation #
 #######################
-logon = se3Logon (path2BatFiles, path2Templates, user, computer, master, arch)
+logon = se3Logon (path2BatFiles, path2Templates, user, computer, master, arch, urlse3)
 
 logon.addReglogon ()
 logon.winsAdd ()
 logon.addFirefoxAutoConfig ()
-logon.addTemplateslogon (templates)
-logon.addTemplateslogoff (templates)
+logon.addgetGPOversion ()
+logon.addTemplateslogon (restgroupes)
+logon.addTemplateslogoff (restgroupes)
 
 ##############################
 # User restrictions creation #
 ##############################
 
-restrictions = se3db.getRestrictions (templates)
+restrictions = se3db.getRestrictions (restgroupes)
 
 gpo = se3GPO (path2BatFiles, user, computer, arch, master)
 gpo.addRest (restrictions)
@@ -123,44 +143,6 @@ printersVBS = se3Printers (path2BatFiles, user, computer, master)
 printersVBS.clean ()
 printersVBS.add (printers)
 del printersVBS
-
-##########################
-# Desktop and Start Menu #
-##########################
-template = se3Templates (path2Templates, path2BatFiles, user)
-
-template.cleanDesktop ()
-template.cleanStartMenu ()
-
-for group in groups:
-    template.createDesktop (["%s@@%s" % (group, computer)])
-    template.createStartMenu (["%s@@%s" % (group, computer)])
-    for parc in parcs:
-        template.createDesktop (["%s@@%s" % (group, parc)])
-        template.createStartMenu (["%s@@%s" % (group, parc)])
-
-template.createDesktop (["%s@@%s" % (user, computer)])
-template.createStartMenu (["%s@@%s" % (user, computer)])
-
-for parc in parcs:
-    template.createDesktop (["%s@@%s" % (user, parc)])
-    template.createStartMenu (["%s@@%s" % (user, parc)])
-
-template.createDesktop ([computer])
-template.createStartMenu ([computer])
-
-template.createDesktop ([user])
-template.createStartMenu ([user])
-
-template.createDesktop (parcs)
-template.createStartMenu (parcs)
-
-template.createDesktop (groups)
-template.createStartMenu (groups)
-
-template.createDesktop (["base"])
-template.createStartMenu (["base"])
-
 del se3db
 del template
 del parcs

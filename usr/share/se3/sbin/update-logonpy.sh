@@ -22,7 +22,7 @@ if [ -e /usr/share/se3/includes/config.inc.sh ];then
 else
 source /var/se3/Progs/install/installdll/confse3.ini
 #adminse3="$(echo $compte_admin_local|sed -s 's/\r//g')"
-xppass="$(echo $password_admin_local|sed -s 's/\r//g')"
+xppass="$(echo "$password_admin_local"|sed -s 's/\r//g')"
 
 fi
 
@@ -38,8 +38,9 @@ export HOME=/root
 cd /tmp
 env WINEDEBUG=-all wine /home/netlogon/CPAU.exe -u "$adminse3" -wait  -p "$xppass" -file gpo_helper.job -lwop -hide -ex "\\\\$netbios\\netlogon\\machine\\{%{COMPUTERNAME}%}\\EnableGPO.bat" -enc 
 env WINEDEBUG=-all wine /home/netlogon/CPAU.exe -u "$adminse3" -wait  -p "$xppass" -file Reg_helper.job -lwop -hide -ex "regedit.exe /s \\\\$netbios\\netlogon\\machine\\{%{COMPUTERNAME}%}\\user.reg&del /q \\\\$netbios\\netlogon\\machine\\{%{COMPUTERNAME}%}\\user.reg" -enc 
-[ ! -d /home/netlogon/machine ] && mkdir /home/netlogon/machine
+rm -fr /home/netlogon/machine  && mkdir /home/netlogon/machine
 mv -f gpo_helper.job /home/netlogon/machine
 mv -f Reg_helper.job /home/netlogon/machine
-
+# on efface les verrous logonpy au cas où ...
+rm -f /home/netlogon/*.lck
 cd - >/dev/null 2>&1

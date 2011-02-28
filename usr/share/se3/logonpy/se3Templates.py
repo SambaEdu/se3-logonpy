@@ -11,6 +11,19 @@ class se3Templates:
         self.__tplPath = path2Templates
 
 
+    def getTemplates (self):
+        """
+            Get template dir list
+        """
+        try:
+            dirList = []
+            for dir in os.listdir (self.__tplPath):
+                 if os.path.isdir (os.path.join(self.__tplPath, dir)):
+                     dirList.append (dir.lower ())
+            return dirList
+        except OSError:
+            print "Error getting template list"
+
     def createDesktop (self, templates):
         """
             Create destktop from templates
