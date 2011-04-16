@@ -20,10 +20,8 @@ netbios="$(grep "netbios name" /etc/samba/smb.conf|cut -d '=' -f2|sed -s "s/ //g
 if [ -e /usr/share/se3/includes/config.inc.sh ];then
 . /usr/share/se3/includes/config.inc.sh -m
 else
-source /var/se3/Progs/install/installdll/confse3.ini
-#adminse3="$(echo $compte_admin_local|sed -s 's/\r//g')"
-xppass="$(echo "$password_admin_local"|sed -s 's/\r//g')"
-
+	echo "impossible de lire /usr/share/se3/includes/config.inc.sh"
+	exit 1
 fi
 
 adminse3="adminse3"
