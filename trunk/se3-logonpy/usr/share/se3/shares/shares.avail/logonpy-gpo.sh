@@ -180,6 +180,11 @@ if [ -f /home/netlogon/machine/$machine/action.bat ]; then
     rm /home/netlogon/machine/$machine/action.bat 
     exit 0
 fi    
+
+if [ "$user" == "${machine}_" ]; then
+    exit 0
+fi    
+
 >/home/netlogon/$user.$machine.lck
 
 # On ne lance que si ntuser.dat a ete modifie 
