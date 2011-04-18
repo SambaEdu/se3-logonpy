@@ -47,6 +47,7 @@ default_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Po
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\RunLogonScriptSync', 'REG_DWORD', 'Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\RunLogonScriptSync', 'REG_DWORD', '2000,XP', '1'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System\CompatibleRUPSecurity', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System\ProfileErrorAction', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System\WaitForNetwork', 'REG_DWORD', 'Vista', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon\SyncForegroundPolicy', 'REG_DWORD', 'XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\ShowLogonOptions', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
