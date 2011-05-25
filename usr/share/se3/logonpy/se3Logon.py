@@ -50,7 +50,7 @@ class se3Logon:
                 self.__logonC.write ("reg delete HKEY_LOCAL_MACHINE\Software\Wpkg\Running /f\r\n")
 
             self.__logonU.write ("time /T >> %SYSTEMDRIVE%\\netinst\\logs\\domscripts.txt\r\n")
-            self.__logonU.write ("---logon.cmd de %USERNAME%--->> %SYSTEMDRIVE%\\netinst\\logs\\domscripts.txt\r\n")
+            self.__logonU.write ("echo execution du logon.cmd de %USERNAME%--->> %SYSTEMDRIVE%\\netinst\\logs\\domscripts.txt\r\n")
             self.__logonC.write ("del /Q /S /F %SYSTEMROOT%\System32\GroupPolicy\User\r\n")
             self.__logoffC.write ("del /Q /S /F %SYSTEMROOT%\System32\GroupPolicy\User\r\n")
             self.__logoffU.write ("del /Q /S /F %USERPROFILE%\Application Data\Microsoft\Wallpaper1.bmp\r\n")
