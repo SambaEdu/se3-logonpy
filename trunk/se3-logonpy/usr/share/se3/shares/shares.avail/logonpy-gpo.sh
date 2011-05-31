@@ -22,6 +22,8 @@ for pathreg in /home/netlogon/*.reg; do
 	if [ ! -f /home/profiles/$1/.$reg.lck -o -f /home/netlogon/forcereg.txt ]; then
 	     sed -e "/^REGEDIT/d;/^Windows Registry Editor Version 5.00/d;s/HKEY_CURRENT_USER/HKEY_USERS\\\\$sid/g" /home/netlogon/$reg >> /home/netlogon/machine/$2/user.reg
 	     mkdir -p /home/profiles/$1
+	     chown  $1 /home/profiles/$1
+	     #chmod 600 /home/profiles/$1
 		 touch /home/profiles/$1/.$reg.lck
 	     flag=1
 		echo "on ajoute $reg"
@@ -233,9 +235,11 @@ sid=$(ldapsearch -xLLL uid=$user sambaSID | grep sambaSID | sed "s/sambaSID: //"
 mkgpopasswd $machine
 
 # Check if some connexion already alive
-/usr/share/se3/sbin/tcpcheck 10 $ip:139|grep -q "timed out" 
+/usr/share/se3/sbin/tcpcheck 5 $ip:139|grep -q "timed out" 
 if [ "$?" == "0" ]
 then
+	[ ! -d "/home/$user" ] && /usr/share/se3/shares/shares.avail/mkhome.sh $user $machine $i$
+        EnableGPO $machine $type 
 	rm -f /home/netlogon/$user.$machine.lck
 	exit 1
 fi
