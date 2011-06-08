@@ -27,6 +27,7 @@ case "$1" in
 	id www-se3 >/dev/null && (
 		/usr/share/se3/sbin/update-logonpy.sh >/dev/null 2>&1
 		chown www-se3 /var/www/se3/includes/menu.d/80printers.inc
+		/usr/share/se3/sbin/update-smbconf.sh
 		
 	# actualisation du cache des parametres : 
         if [ -e /usr/share/se3/includes/config.inc.sh ]; then
