@@ -44,7 +44,7 @@ echo gPCMachineExtensionNames=[{35378EAC-683F-11D2-A89A-00C04FBBCFA2}{0F6B957D-5
 :: inutile, on les DL au logon
 :: copy  %SYSTEMROOT%\System32\GroupPolicy\gpt.ini \\%se3ip%\netlogon\machine\%machine%\gpt.ini
 
-cacls %SYSTEMROOT%\System32\GroupPolicy\User\registry.pol /E /G %domain%\%user%:RDX
+cacls %SYSTEMROOT%\System32\GroupPolicy\User\registry.pol /E /G %domain%\%user%:R
 cacls %SYSTEMROOT%\System32\GroupPolicy\gpt.ini /E /G %domain%\%user%:R
 gpupdate /force
 echo cpau ok>%SYSTEMROOT%\System32\GroupPolicy\Se3.log
