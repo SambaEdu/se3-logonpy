@@ -17,6 +17,15 @@ function createREG
 {
 echo -e "REGEDIT4\r\n"> /home/netlogon/machine/$2/user.reg
 flag=0
+
+# on cherche les cles qui doivent etre passees a chaque fois
+for pathreg in /home/netlogon/*.ref; do
+	reg=${pathreg##*/}
+    sed -e "/^REGEDIT/d;/^Windows Registry Editor Version 5.00/d;s/HKEY_CURRENT_USER/HKEY_USERS\\\\$sid/g" /home/netlogon/$reg >> /home/netlogon/machine/$2/user.reg
+    flag=1
+    echo "on force $reg"   
+done
+# on cherche les cles a passer une seule fois
 for pathreg in /home/netlogon/*.reg; do
 	reg=${pathreg##*/}
 	if [ ! -f /home/profiles/$1/.$reg.lck -o -f /home/netlogon/forcereg.txt ]; then
