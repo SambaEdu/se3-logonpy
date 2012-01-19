@@ -43,6 +43,7 @@ default_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Po
                 ('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters\DisablePasswordChange', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\ForceGuest', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\DeleteRoamingCache', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\LocalAccountTokenFilterPolicy', 'REG_DWORD', 'Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System\DeleteRoamingCache', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\RunLogonScriptSync', 'REG_DWORD', 'Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\RunLogonScriptSync', 'REG_DWORD', '2000,XP', '1'),
