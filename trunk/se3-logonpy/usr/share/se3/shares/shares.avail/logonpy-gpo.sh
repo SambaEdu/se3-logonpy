@@ -95,7 +95,7 @@ function uploadWallpaper
 {
 if [  -f "/var/se3/Docs/media/fonds_ecran/$1.$ext" ]; then
     smbclient  //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD << EOF
-	put /var/se3/Docs/media/fonds_ecran/$1.$ext Web\Wallpaper\se3.$ext
+	put /var/se3/Docs/media/fonds_ecran/$1.$ext Web\Wallpaper\\$1_se3.$ext
 EOF
 return $?
 fi

@@ -148,15 +148,15 @@ class se3DB:
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop\NoHTMLWallpaper",\
                          "REG_DWORD", "Vista,Seven", "SUPPR"))
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\Wallpaper",\
-                         "REG_SZ", "2000,XP", "C:\Windows\Web\Wallpaper\Se3.bmp"))
+                         "REG_SZ", "2000,XP", "C:\Windows\Web\Wallpaper\%s_se3.bmp" % self.__user))
             rest.append (("HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper",\
-                         "REG_SZ", "2000,XP", "C:\Windows\Web\Wallpaper\Se3.bmp"))
+                         "REG_SZ", "2000,XP", "C:\Windows\Web\Wallpaper\\%s_se3.bmp" % self.__user))
             rest.append (("HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper",\
                          "REG_DWORD", "2000,XP", "PROTECT"))          
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\Wallpaper",\
-                         "REG_SZ", "Vista,Seven", "C:\Windows\Web\Wallpaper\Se3.jpg"))
+                         "REG_SZ", "Vista,Seven", "C:\Windows\Web\Wallpaper\%s_se3.jpg" % self.__user))
             rest.append (("HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper",\
-                         "REG_SZ", "Vista,Seven", "C:\Windows\Web\Wallpaper\Se3.jpg"))
+                         "REG_SZ", "Vista,Seven", "C:\Windows\Web\Wallpaper\%s_se3.jpg" % self.__user))
             if not tileWallSet:
                 rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\WallpaperStyle",\
                          "REG_SZ", "2000,XP,Vista,Seven", "2"))
