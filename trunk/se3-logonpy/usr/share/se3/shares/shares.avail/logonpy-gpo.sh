@@ -165,8 +165,8 @@ chmod 600 /home/netlogon/machine/$1/gpoPASSWD
 }
 
 
-user=$1
-machine=$(echo "$2" | tr 'A-Z' 'a-z')
+user=$1 
+machine=$2 
 ip=$3
 type=$4
 
@@ -174,25 +174,22 @@ case $type in
 Vista|Seven)
     ext=jpg
     profile=$user.V2
-	ntuser=NTUSER.DAT
+    ntuser=NTUSER.DAT
 ;;
 *)
     ext=bmp
     profile=$user
-	ntuser=ntuser.dat
+    ntuser=ntuser.dat
 ;;
 esac
 
 # on efface les verrous de plus de 5 minutes, y a pas de raison qu'ils soient encore la
 find /home/netlogon -maxdepth 1 ! -cmin 5 -name *.$machine.lck -delete
+
 # On ne le lance qu'une fois et pas si action domscripts en cours...
 [ -f  /home/netlogon/$user.$machine.lck -o -f /home/netlogon/machine/$machine/no-gpo-upload.lck  ] && exit 0
 if [ -f /home/netlogon/machine/$machine/action.bat ]; then
     rm /home/netlogon/machine/$machine/action.bat 
-    exit 0
-fi    
-
-if [ "$user" == "${machine}_" ]; then
     exit 0
 fi    
 
@@ -227,17 +224,8 @@ else
     [ "$mtime" != "-1" ] && echo "$mtime" > /home/netlogon/machine/$machine/logon.lck
 fi
 
-if [ -e /etc/se3/config_m.cache.sh ]; then
-	. /etc/se3/config_m.cache.sh
-else
-
-	source /var/se3/Progs/install/installdll/confse3.ini
-	adminse3="$(echo $compte_admin_local|sed -e 's/\r//g')"
-	xppass="$(echo $password_admin_local|sed -e 's/\r//g')"
-	se3ip="$(echo $ip_se3|sed -e 's/\r//g')"
-	se3_domain="$(echo $domaine|sed -e 's/\r//g')"
-fi
-
+# initialisation des parametres
+. /etc/se3/config_m.cache.sh
 sid=$(ldapsearch -xLLL uid=$user sambaSID | grep sambaSID | sed "s/sambaSID: //")
 
 
@@ -247,7 +235,7 @@ mkgpopasswd $machine
 /usr/share/se3/sbin/tcpcheck 5 $ip:139|grep -q "timed out" 
 if [ "$?" == "0" ]
 then
-	[ ! -d "/home/$user" ] && /usr/share/se3/shares/shares.avail/mkhome.sh $user $machine $i$
+	[ ! -d "/home/$user" ] && /usr/share/se3/shares/shares.avail/mkhome.sh $user $machine $ip $type
         EnableGPO $machine $type 
 	rm -f /home/netlogon/$user.$machine.lck
 	exit 1
