@@ -45,11 +45,12 @@ class se3Printers:
             Add printers rules
         """
         try:
-            if (len (printers)):
-                self.__vbsContent.append ("AddUserPrinterDevice \"%s\", \"%s\"\r\n" % (self.__master,printers[0]))
-                self.__vbsContent.append ("SetUserDefaultPrinterDevice \"%s\", \"%s\"\r\n" % (self.__master, printers[0]))
-                for printer in printers[1:]:
+            if len(printers) > 0:
+                for printer in printers:
                     self.__vbsContent.append ("AddUserPrinterDevice \"%s\", \"%s\"\r\n" % (self.__master, printer))
+                # Il semble préférable de définir l'imprimante par défaut après
+                # les avoir ajoutées toutes.
+                self.__vbsContent.append ("SetUserDefaultPrinterDevice \"%s\", \"%s\"\r\n" % (self.__master, printers[0]))
 
         except OSError:
            print "Can't write printer %s.vbs" % self.__computer
