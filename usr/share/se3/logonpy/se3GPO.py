@@ -77,6 +77,7 @@ default_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Po
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\\abfc2519-3608-4c2a-94ea-171b0ed546ab\DCSettingIndex', 'REG_DWORD', 'Vista', '0'),
                 ('HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\System\ExcludeProfileDirs', 'REG_SZ', '2000,XP,Vista,Seven', 'Application Data;Temporary Internet Files;Historique;Temp;Credentials;Media Player;Windows Media;SystemCertificates;CrypnetUrlCache;Internet Explorer'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Windows NT\Printers\KMPrintersAreBlocked', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Windows NT\Driver signing\BehaviorOnFailedVerify', 'REG_DWORD', 'Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DriverSearching\DontSearchWindowsUpdate', 'REG_DWORD', 'XP,Vista,Seven', '1'),
                 ('HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint\Restricted', 'REG_DWORD', 'XP,Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{42B5FAAE-6536-11d2-AE5A-0000F87571E3}\NoGPOListChanges', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
