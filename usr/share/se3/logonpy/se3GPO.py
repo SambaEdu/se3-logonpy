@@ -17,22 +17,22 @@ REG_QWORD=11;
 REGFILE_SIGNATURE="67655250"
 REGFILE_VERSION="00000001"
 
-folder_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\{374DE290-123F-4565-9164-39C4925E467B}', 'REG_EXPAND_SZ', 'Vista', 'K:\Bureau'),
+folder_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\{374DE290-123F-4565-9164-39C4925E467B}', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\Bureau'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Local AppData', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', '%USERPROFILE%\Application Data'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Local Settings', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', '%USERPROFILE%\Local Settings'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\AppData', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\\appdata'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Cache', 'REG_EXPAND_SZ', 'Vista', 'K:\profil\\appdata\Cache'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Cookies', 'REG_EXPAND_SZ', 'Vista', 'K:\profil\\appdata\Cookies'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Cache', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\profil\\appdata\Cache'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Cookies', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\profil\\appdata\Cookies'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Desktop', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\Bureau'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Favorites', 'REG_EXPAND_SZ', 'Vista', 'K:\profil\\appdata\Favorites'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\History', 'REG_EXPAND_SZ', 'Vista', 'K:\profil\\appdata\History'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\My Music', 'REG_EXPAND_SZ', 'Vista', 'K:\Musique'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\My Pictures', 'REG_EXPAND_SZ', 'Vista', 'K:\Photos'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\My Video', 'REG_EXPAND_SZ', 'Vista', 'K:\Videos'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\NetHood', 'REG_EXPAND_SZ', 'Vista', 'K:\profil\\appdata\NetHood'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Favorites', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\profil\\appdata\Favorites'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\History', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\profil\\appdata\History'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\My Music', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\Musique'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\My Pictures', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\Photos'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\My Video', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\Videos'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\NetHood', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\profil\\appdata\NetHood'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Personal', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\Docs'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\PrintHood', 'REG_EXPAND_SZ', 'Vista', 'K:\profil\\appdata\PrintHood'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Recent', 'REG_EXPAND_SZ', 'Vista', 'K:\profil\\appdata\Recent'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\PrintHood', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\profil\\appdata\PrintHood'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Recent', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\profil\\appdata\Recent'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\SendTo', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven','%USERPROFILE%\SendTo'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Templates', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\\appdata\Templates')]
 
@@ -49,34 +49,34 @@ default_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Po
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\RunLogonScriptSync', 'REG_DWORD', '2000,XP', '1'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System\CompatibleRUPSecurity', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System\ProfileErrorAction', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
-                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System\WaitForNetwork', 'REG_DWORD', 'Vista', '0'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System\WaitForNetwork', 'REG_DWORD', 'Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon\SyncForegroundPolicy', 'REG_DWORD', 'XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\ShowLogonOptions', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\DisableCAD', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\policies\system\DontDisplayLastUserName', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
-                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_ShowMyDocs', 'REG_DWORD', 'Vista', '0'),
-                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_ShowMyPics', 'REG_DWORD', 'Vista', '0'),
-                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_ShowMyMusic', 'REG_DWORD', 'Vista', '0'),
-                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_ShowMyGames', 'REG_DWORD', 'Vista', '0'),
-                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_ShowUser', 'REG_DWORD', 'Vista', '0'),
-                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\BitBucket\KnownFolder\{374DE290-123F-4565-9164-39C4925E467B}\NukeOnDelete', 'REG_DWORD', 'Vista', '1'),
-                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\BitBucket\KnownFolder\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}\NukeOnDelete', 'REG_DWORD', 'Vista', '1'),
-                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\BitBucket\KnownFolder\{FDD39AD0-238F-46AF-ADB4-6C85480369C7}\NukeOnDelete', 'REG_DWORD', 'Vista', '1'),
+                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_ShowMyDocs', 'REG_DWORD', 'Vista,Seven', '0'),
+                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_ShowMyPics', 'REG_DWORD', 'Vista,Seven', '0'),
+                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_ShowMyMusic', 'REG_DWORD', 'Vista,Seven', '0'),
+                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_ShowMyGames', 'REG_DWORD', 'Vista,Seven', '0'),
+                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_ShowUser', 'REG_DWORD', 'Vista,Seven', '0'),
+                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\BitBucket\KnownFolder\{374DE290-123F-4565-9164-39C4925E467B}\NukeOnDelete', 'REG_DWORD', 'Vista,Seven', '1'),
+                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\BitBucket\KnownFolder\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}\NukeOnDelete', 'REG_DWORD', 'Vista,Seven', '1'),
+                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\BitBucket\KnownFolder\{FDD39AD0-238F-46AF-ADB4-6C85480369C7}\NukeOnDelete', 'REG_DWORD', 'Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\NetCache\Enabled', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\NetCache\NoConfigCache', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\NetCache\FormatDataBase', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\NetCache\DisableFRAdminPin', 'REG_DWORD', '2000,XP,Vista,Seven', '2'),
                 ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel\{645FF040-5081-101B-9F08-00AA002F954E}', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
                 ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\ClassicStartMenu\{645FF040-5081-101B-9F08-00AA002F954E}', 'REG_DWORD', '2000,XP,Vista,Seven', '1'),
-                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run\WindowsWelcomeCenter', 'REG_SZ', 'Vista', 'SUPPR'),
-                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\A7066653-8D6C-40A8-910E-A1F54B84C7E5\ACSettingIndex', 'REG_DWORD', 'Vista', '2'),
-                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\A7066653-8D6C-40A8-910E-A1F54B84C7E5\DCSettingIndex', 'REG_DWORD', 'Vista', '2'),
-                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\94ac6d29-73ce-41a6-809f-6363ba21b47e\ACSettingIndex', 'REG_DWORD', 'Vista', '0'),
-                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\94ac6d29-73ce-41a6-809f-6363ba21b47e\DCSettingIndex', 'REG_DWORD', 'Vista', '0'),
-                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\\abfc2519-3608-4c2a-94ea-171b0ed546ab\ACSettingIndex', 'REG_DWORD', 'Vista', '0'),
-                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\\abfc2519-3608-4c2a-94ea-171b0ed546ab\DCSettingIndex', 'REG_DWORD', 'Vista', '0'),
+                ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run\WindowsWelcomeCenter', 'REG_SZ', 'Vista,Seven', 'SUPPR'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\A7066653-8D6C-40A8-910E-A1F54B84C7E5\ACSettingIndex', 'REG_DWORD', 'Vista,Seven', '2'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\A7066653-8D6C-40A8-910E-A1F54B84C7E5\DCSettingIndex', 'REG_DWORD', 'Vista,Seven', '2'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\94ac6d29-73ce-41a6-809f-6363ba21b47e\ACSettingIndex', 'REG_DWORD', 'Vista,Seven', '0'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\94ac6d29-73ce-41a6-809f-6363ba21b47e\DCSettingIndex', 'REG_DWORD', 'Vista,Seven', '0'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\\abfc2519-3608-4c2a-94ea-171b0ed546ab\ACSettingIndex', 'REG_DWORD', 'Vista,Seven', '0'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\\abfc2519-3608-4c2a-94ea-171b0ed546ab\DCSettingIndex', 'REG_DWORD', 'Vista,Seven', '0'),
                 ('HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\System\ExcludeProfileDirs', 'REG_SZ', '2000,XP,Vista,Seven', 'Application Data;Temporary Internet Files;Historique;Temp;Credentials;Media Player;Windows Media;SystemCertificates;CrypnetUrlCache;Internet Explorer'),
-                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Windows NT\Printers\KMPrintersAreBlocked', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Windows NT\Printers\KMPrintersAreBlocked', 'REG_DWORD', '2000,XP', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Windows NT\Driver signing\BehaviorOnFailedVerify', 'REG_DWORD', 'Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DriverSearching\DontSearchWindowsUpdate', 'REG_DWORD', 'XP,Vista,Seven', '1'),
                 ('HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint\Restricted', 'REG_DWORD', 'XP,Vista,Seven', '0'),
@@ -87,13 +87,15 @@ default_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Po
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}\NoGPOListChanges', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}\NoSlowLink', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System\SlowLinkDetectEnabled', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
-                ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\HideFastUserSwitching', 'REG_DWORD', 'Vista', '1'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\HideFastUserSwitching', 'REG_DWORD', 'Vista,Seven', '1'),
                 ('HKEY_CURRENT_USER\Control Panel\Colors\Background', 'REG_SZ', 'XP', '58 110 165'),
                 ('HKEY_CURRENT_USER\Control Panel\Colors\MenuHilight', 'REG_SZ', 'XP', '49 106 197'),
                 ('HKEY_CURRENT_USER\Control Panel\Colors\Hilight', 'REG_SZ', 'XP', '49 106 197'),
                 ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\ThemeManager\ColorName', 'REG_SZ', 'XP', 'NormalColor'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoDriveAutoRun', 'REG_DWORD', '2000,XP,Vista,Seven', '67108863')]
 #TODO Remove all style keys, it's now ntuser.dat default!
+firewall_keys = [('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile\DoNotAllowExceptions', 'REG_DWORD', 'XP,Vista,Seven', '0'),
+                ('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\DoNotAllowExceptions', 'REG_DWORD', 'XP,Vista,Seven', '0')]
 
 class se3GPO:
 
@@ -274,7 +276,7 @@ class se3GPO:
         """
             Add reg rules to pol
         """
-        restrictions += folder_keys + default_keys
+        restrictions += folder_keys + default_keys + firewall_keys
         try:
             for rest in restrictions:
                 if rest[2] != "TOUS":

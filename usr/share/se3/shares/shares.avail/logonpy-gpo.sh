@@ -232,7 +232,7 @@ sid=$(ldapsearch -xLLL uid=$user sambaSID | grep sambaSID | sed "s/sambaSID: //"
 mkgpopasswd $machine
 
 # Check if some connexion already alive
-/usr/share/se3/sbin/tcpcheck 5 $ip:139|grep -q "timed out" 
+/usr/share/se3/sbin/tcpcheck 30 $ip:139|grep -q "timed out" 
 if [ "$?" == "0" ]
 then
 	[ ! -d "/home/$user" ] && /usr/share/se3/shares/shares.avail/mkhome.sh $user $machine $ip $type
