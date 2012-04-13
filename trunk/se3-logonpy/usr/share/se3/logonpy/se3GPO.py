@@ -89,6 +89,7 @@ default_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Po
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System\SlowLinkDetectEnabled', 'REG_DWORD', '2000,XP,Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System\HideFastUserSwitching', 'REG_DWORD', 'Vista,Seven', '1'),
                 ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\DelayedDesktopSwitchTimeout', 'REG_DWORD', 'Vista,Seven', '5'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Mail\ManualLaunchAllowed', 'REG_DWORD', 'Vista,Seven', '0'),
                 ('HKEY_CURRENT_USER\Control Panel\Colors\Background', 'REG_SZ', 'XP', '58 110 165'),
                 ('HKEY_CURRENT_USER\Control Panel\Colors\MenuHilight', 'REG_SZ', 'XP', '49 106 197'),
                 ('HKEY_CURRENT_USER\Control Panel\Colors\Hilight', 'REG_SZ', 'XP', '49 106 197'),
