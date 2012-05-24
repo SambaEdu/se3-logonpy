@@ -18,8 +18,9 @@ REGFILE_SIGNATURE="67655250"
 REGFILE_VERSION="00000001"
 
 folder_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\{374DE290-123F-4565-9164-39C4925E467B}', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\Bureau'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Local AppData', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', '%USERPROFILE%\Application Data'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Local Settings', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', '%USERPROFILE%\Local Settings'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Local AppData', 'REG_EXPAND_SZ', '2000,XP', '%USERPROFILE%\Application Data'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Local AppData', 'REG_EXPAND_SZ', 'Vista,Seven', '%USERPROFILE%\Appdata\Local'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Local Settings', 'REG_EXPAND_SZ', '2000,XP', '%USERPROFILE%\Local Settings'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\AppData', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\\appdata'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Cache', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\profil\\appdata\Cache'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Cookies', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\profil\\appdata\Cookies'),
@@ -33,7 +34,7 @@ folder_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Exp
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Personal', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\Docs'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\PrintHood', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\profil\\appdata\PrintHood'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Recent', 'REG_EXPAND_SZ', 'Vista,Seven', 'K:\profil\\appdata\Recent'),
-              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\SendTo', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven','%USERPROFILE%\SendTo'),
+              ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\SendTo', 'REG_EXPAND_SZ', '2000,XP','%USERPROFILE%\SendTo'),
               ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Templates', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\\appdata\Templates')]
 
 
