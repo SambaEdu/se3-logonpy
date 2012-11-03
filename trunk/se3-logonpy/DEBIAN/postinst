@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 # postinst script for smbedu
 #
 # see: dh_installdeb(1)
@@ -25,7 +25,7 @@ case "$1" in
     configure)
 	echo "Installation des scripts CPAU en cours......"
 	id www-se3 >/dev/null && (
-		/usr/share/se3/sbin/update-logonpy.sh >/dev/null 2>&1
+		/usr/share/se3/sbin/update-logonpy.sh >/dev/null 
 		chown www-se3 /var/www/se3/includes/menu.d/80printers.inc
 		/usr/share/se3/sbin/update-smbconf.sh
 		
