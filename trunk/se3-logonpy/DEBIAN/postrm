@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 # postrm script for se3-logonpy
 #
 # see: dh_installdeb(1)
@@ -17,13 +17,11 @@ set -e
 # for details, see /usr/doc/packaging-manual/
 
 case "$1" in
-       remove|abort-install)
-	(
-	dpkg-divert --package se3-logonpy --remove --rename --divert /etc/samba/smb_CIFSFS.conf
-	dpkg-divert --package se3-logonpy --remove --rename --divert /etc/samba/smb_Samba.conf
+       remove|abort-install-purge)
 	
-	) >/dev/null
-        ;;
+# 	dpkg-divert --package se3-logonpy --rename --remove --divert /etc/samba/smb_Samba.conf
+	exit 0
+	;;
 
     *)
         exit 0
