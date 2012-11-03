@@ -1,14 +1,20 @@
-#! /bin/sh
+#! /bin/bash
 
 set -e
-(
+paquet=$(dpkg-divert --listpackage  /etc/samba/smb_CIFSFS.conf)
+if [ "$paquet" = "se3-logonpy" ]; then
+	dpkg-divert --package se3-logonpy --rename --remove /etc/samba/smb_CIFSFS.conf 
+fi
 
-dpkg-divert --package se3-logonpy --add --rename --divert /etc/samba/smb_CIFSFS.conf.divert  /etc/samba/smb_CIFSFS.conf
-dpkg-divert --package se3-logonpy --add --rename --divert /etc/samba/smb_Samba.conf.divert  /etc/samba/smb_Samba.conf
+
+
+#dpkg-divert --package se3-logonpy --add --rename --divert /etc/samba/smb_Samba.conf.divert  /etc/samba/smb_Samba.conf
  
+paquet=$(dpkg-divert --listpackage  /etc/samba/smb_Samba.conf)
+if [ "$paquet" = "se3-logonpy" ]; then
+	dpkg-divert  --package se3-logonpy --rename --remove /etc/samba/smb_Samba.conf
+fi
 
-
-) >/dev/null
 
 
 
