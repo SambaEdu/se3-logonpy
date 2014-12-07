@@ -21,22 +21,21 @@ flag=0
 # on cherche les cles qui doivent etre passees a chaque fois
 for pathreg in /home/netlogon/*.ref; do
 	reg=${pathreg##*/}
-    sed -e "/^REGEDIT/d;/^Windows Registry Editor Version 5.00/d;s/HKEY_CURRENT_USER/HKEY_USERS\\\\$sid/g" /home/netlogon/$reg >> /home/netlogon/machine/$2/user.reg
-    flag=1
-    echo "on force $reg"   
+    if  [ -f "/home/netlogon/$reg" ]; then 
+        sed -e "/^REGEDIT/d;/^Windows Registry Editor Version 5.00/d;s/HKEY_CURRENT_USER/HKEY_USERS\\\\$sid/g" /home/netlogon/$reg >> /home/netlogon/machine/$2/user.reg
+        flag=1
+        echo "on force $reg"
+    fi
 done
 # on cherche les cles a passer une seule fois
 for pathreg in /home/netlogon/*.reg; do
 	reg=${pathreg##*/}
-	if [ ! -f /home/profiles/$1/.$reg.lck -o -f /home/netlogon/forcereg.txt ]; then
+	if [ ! -f /home/profiles/$profile/.$reg.lck -o -f /home/netlogon/forcereg.txt ]; then
 	     sed -e "/^REGEDIT/d;/^Windows Registry Editor Version 5.00/d;s/HKEY_CURRENT_USER/HKEY_USERS\\\\$sid/g" /home/netlogon/$reg >> /home/netlogon/machine/$2/user.reg
-	     mkdir -p /home/profiles/$1
-	     chown  $1 /home/profiles/$1
-	     #chmod 600 /home/profiles/$1
-		 touch /home/profiles/$1/.$reg.lck
+             touch /home/profiles/$profile/.$reg.lck
 	     flag=1
-		echo "on ajoute $reg"
-	fi     
+	     echo "on ajoute $reg"
+	fi
 done
 if [ "$flag" == "0" ]; then
         deleteREG $2
@@ -157,9 +156,8 @@ function mkgpopasswd #netbiosname
 [ -f /home/netlogon/machine/$1 ] && rm -f /home/netlogon/machine/$1
 [ ! -d /home/netlogon/machine/$1 ] && mkdir -p /home/netlogon/machine/$1
 (
-echo username=adminse3
+echo username=$1\\adminse3
 echo password=$xppass
-echo domain=$1
 )>/home/netlogon/machine/$1/gpoPASSWD
 chmod 600 /home/netlogon/machine/$1/gpoPASSWD
 }
@@ -231,6 +229,18 @@ sid=$(ldapsearch -xLLL uid=$user sambaSID | grep sambaSID | sed "s/sambaSID: //"
 
 mkgpopasswd $machine
 
+# correction des droits sur les profiles si necessaire
+if [ -d /home/profiles/$profile ]; then
+    prop=`stat -c%U /home/profiles/$profile`
+    if [ "$prop" != "$user" ]; then
+         chown -R $user:lcs-users /home/profile/$profile > /dev/null 2>&1
+    fi
+else
+    mkdir -p /home/profiles/$profile
+    chown  $user:lcs-users /home/profiles/$profile
+    #chmod 600 /home/profiles/$1
+fi
+
 # Check if some connexion already alive
 /usr/share/se3/sbin/tcpcheck 30 $ip:139|grep -q "timed out" 
 if [ "$?" == "0" ]
@@ -255,16 +265,14 @@ fi
 createREG $user $machine
 if [ "$localmenu" == "1" ]
 then
-	pathDemarrer="/home/profiles/$user/Demarrer"
-#	find "$pathDemarrer" -group root # -delete
-	[ ! -d "$pathDemarrer" ] && mkdir -p "$pathDemarrer" && chown -R  $user:admins "/home/profiles/$profile"
+	pathDemarrer="/home/profiles/$profile/Demarrer"
+	[ ! -d "$pathDemarrer" ] && mkdir -p "$pathDemarrer" && chown -R  $user:lcs-users "/home/profiles/$profile"
 else
 	pathDemarrer="/home/$user/profil/Demarrer"
 	chown $user:admins $pathDemarrer/Programmes
+	chmod -R 755 "$pathDemarrer"
 fi
 /usr/share/se3/logonpy/logon.py $user $machine $type
-
-chmod -R 755 "$pathDemarrer"
 
 chown -R adminse3:admins /home/netlogon/machine/$machine
 chmod 755 /home/netlogon/machine/$machine
