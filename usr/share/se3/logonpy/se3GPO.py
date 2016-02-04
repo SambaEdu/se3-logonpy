@@ -98,8 +98,14 @@ default_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Po
                 ('HKEY_CURRENT_USER\Control Panel\Colors\MenuHilight', 'REG_SZ', 'XP', '49 106 197'),
                 ('HKEY_CURRENT_USER\Control Panel\Colors\Hilight', 'REG_SZ', 'XP', '49 106 197'),
                 ('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\ThemeManager\ColorName', 'REG_SZ', 'XP', 'NormalColor'),
-                ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoDriveAutoRun', 'REG_DWORD', '2000,XP,Vista,Seven', '67108863')]
-#TODO Remove all style keys, it's now ntuser.dat default!
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\TrendMicro\NSC\TmProxy\ProtocolHandler\Http\Config\SockRequestBufSize', 'REG_DWORD', 'Vista,Seven', '9437184'),
+                ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoDriveAutoRun', 'REG_DWORD', '2000,XP,Vista,Seven', '67108863'),
+		('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Gwx\DisableGwx', 'REG_DWORD', 'Vista,Seven', '1'),
+		('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\OSUpgrade\ReservationsAllowed', 'REG_DWORD', 'Vista,Seven', '0'),
+		('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\DisableOSUpgrade', 'REG_DWORD', 'Vista,Seven', '1'),
+		('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\IncludeRecommendedUpdates', 'REG_DWORD', 'Vista,Seven', '0')]
+
+M#TODO Remove all style keys, it's now ntuser.dat default!
 firewall_keys = [('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile\DoNotAllowExceptions', 'REG_DWORD', 'XP,Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\DoNotAllowExceptions', 'REG_DWORD', 'XP,Vista,Seven', '0')]
 
@@ -276,6 +282,22 @@ class se3GPO:
     #            hexdata += self.__polGetAddValHex (printers_key + printer, "uNCName", REG_SZ, "\\\\" + self.__master + "\\" + printer)
     #            self.__gpoU.write (hexdata)
     #    except: pass
+
+    # Network share mappings.
+    #def addNetMappings (self, shares):
+    #    """
+    #        Add reg rules to pol
+    #    """
+    #    try:
+    #        for share in shares:
+    #            netmap_key = ("Network\%s" % driveLetter)
+    #            hexdata = self.__polGetAddValHex (netmap_key + printer, "printAttributes", REG_DWORD, "0")
+    #            hexdata += self.__polGetAddValHex (printers_key + printer, "printerName", REG_SZ, printer)
+    #            hexdata += self.__polGetAddValHex (printers_key + printer, "serverName", REG_SZ, "\\\\" + self.__master)
+    #            hexdata += self.__polGetAddValHex (printers_key + printer, "uNCName", REG_SZ, "\\\\" + self.__master + "\\" + printer)
+    #            self.__gpoU.write (hexdata)
+    #    except: pass
+
 
 
     def addRest (self, restrictions):
