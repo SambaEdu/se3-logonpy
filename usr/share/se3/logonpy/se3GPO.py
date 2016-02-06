@@ -105,7 +105,7 @@ default_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Po
 		('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\DisableOSUpgrade', 'REG_DWORD', 'Vista,Seven', '1'),
 		('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\IncludeRecommendedUpdates', 'REG_DWORD', 'Vista,Seven', '0')]
 
-M#TODO Remove all style keys, it's now ntuser.dat default!
+#TODO Remove all style keys, it's now ntuser.dat default!
 firewall_keys = [('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile\DoNotAllowExceptions', 'REG_DWORD', 'XP,Vista,Seven', '0'),
                 ('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\DoNotAllowExceptions', 'REG_DWORD', 'XP,Vista,Seven', '0')]
 
