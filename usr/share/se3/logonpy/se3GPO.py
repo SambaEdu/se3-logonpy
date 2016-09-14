@@ -104,6 +104,7 @@ default_keys = [('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Po
 		('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\OSUpgrade\ReservationsAllowed', 'REG_DWORD', 'Vista,Seven', '0'),
 		('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\DisableOSUpgrade', 'REG_DWORD', 'Vista,Seven', '1'),
 		('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\IncludeRecommendedUpdates', 'REG_DWORD', 'Vista,Seven', '0'),
+		('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\AUOptions', 'REG_DWORD', 'Vista,Seven', '1'),
 		('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\NoAutoUpdate', 'REG_DWORD', 'Vista,Seven', '1')]
 
 #TODO Remove all style keys, it's now ntuser.dat default!
