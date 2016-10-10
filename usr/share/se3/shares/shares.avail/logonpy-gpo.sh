@@ -266,7 +266,7 @@ createREG $user $machine
 if [ "$localmenu" == "1" ]
 then
 	pathDemarrer="/home/profiles/$profile/Demarrer"
-	[ ! -d "$pathDemarrer" ] && mkdir -p "$pathDemarrer" && chown -R  $user:lcs-users "/home/profiles/$profile"
+#	[ ! -d "$pathDemarrer" ] && mkdir -p "$pathDemarrer" && chown -R  $user:lcs-users "/home/profiles/$profile"
 else
 	pathDemarrer="/home/$user/profil/Demarrer"
 	chown $user:admins $pathDemarrer/Programmes
