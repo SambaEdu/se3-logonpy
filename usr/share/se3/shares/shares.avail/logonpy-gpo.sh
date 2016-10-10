@@ -30,9 +30,9 @@ done
 # on cherche les cles a passer une seule fois
 for pathreg in /home/netlogon/*.reg; do
 	reg=${pathreg##*/}
-	if [ ! -f /home/profiles/$profile/.$reg.lck -o -f /home/netlogon/forcereg.txt ]; then
+	if [ ! -f /home/$1/profil/.$reg.lck -o -f /home/netlogon/forcereg.txt ]; then
 	     sed -e "/^REGEDIT/d;/^Windows Registry Editor Version 5.00/d;s/HKEY_CURRENT_USER/HKEY_USERS\\\\$sid/g" /home/netlogon/$reg >> /home/netlogon/machine/$2/user.reg
-             touch /home/profiles/$profile/.$reg.lck
+             touch /home/$1/profil/.$reg.lck
 	     flag=1
 	     echo "on ajoute $reg"
 	fi
@@ -172,6 +172,8 @@ case $type in
 Vista|Seven)
     ext=jpg
     profile=$user.V2
+    profile5=$user.V5
+    profile6=$user.V6
     ntuser=NTUSER.DAT
 ;;
 *)
@@ -196,6 +198,10 @@ fi
 # On ne lance que si ntuser.dat a ete modifie 
 if [ -f /home/profiles/$profile/$ntuser ]; then
 	mtime=$(stat -c %Z /home/profiles/$profile/$ntuser 2>/dev/null)
+elif [ -f /home/profiles/$profile5/$ntuser ]; then
+	mtime=$(stat -c %Z /home/profiles/$profile5/$ntuser 2>/dev/null)
+elif [ -f /home/profiles/$profile5/$ntuser ]; then
+	mtime=$(stat -c %Z /home/profiles/$profile6/$ntuser 2>/dev/null)
 else
 	mtime=-1
 fi
