@@ -30,9 +30,9 @@ done
 # on cherche les cles a passer une seule fois
 for pathreg in /home/netlogon/*.reg; do
 	reg=${pathreg##*/}
-	if [ ! -f /home/$1/profil/.$reg.lck -o -f /home/netlogon/forcereg.txt ]; then
+	if [ ! -f /home/profiles/$profile/.$reg.lck -o -f /home/netlogon/forcereg.txt ]; then
 	     sed -e "/^REGEDIT/d;/^Windows Registry Editor Version 5.00/d;s/HKEY_CURRENT_USER/HKEY_USERS\\\\$sid/g" /home/netlogon/$reg >> /home/netlogon/machine/$2/user.reg
-             touch /home/$1/profil/.$reg.lck
+             touch /home/profiles/$profile/.$reg.lck
 	     flag=1
 	     echo "on ajoute $reg"
 	fi
@@ -66,6 +66,20 @@ smbclient  //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD << EOF
 	put /home/netlogon/machine/$2/printers.vbs printers.vbs
 EOF
 	return $?
+}
+
+function WinVer
+{
+ret=$(echo quit|smbclient //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD 2>&1)
+if $(echo $ret|grep -q "Windows 10 Pro 14"); then
+        return 11 
+elif $(echo $ret|grep -q "Windows 10"); then
+	return 10
+elif  $(echo $ret|grep -q "Windows 7"); then
+	return 7
+else
+	return 0
+fi
 }
 
 function setGPOversion
@@ -168,18 +182,31 @@ machine=$2
 ip=$3
 type=$4
 
-case $type in
-Vista|Seven)
+WinVer $user $machine $ip
+case $? in
+7)
     ext=jpg
     profile=$user.V2
-    profile5=$user.V5
-    profile6=$user.V6
     ntuser=NTUSER.DAT
+    type="Vista"
+;;
+10)
+    ext=jpg
+    profile=$user.V5
+    ntuser=NTUSER.DAT
+    type="Vista"
+;;
+11)
+    ext=jpg
+    profile=$user.V6
+    ntuser=NTUSER.DAT
+    type="Vista"
 ;;
 *)
     ext=bmp
     profile=$user
     ntuser=ntuser.dat
+    type="WinXP"
 ;;
 esac
 
@@ -198,10 +225,6 @@ fi
 # On ne lance que si ntuser.dat a ete modifie 
 if [ -f /home/profiles/$profile/$ntuser ]; then
 	mtime=$(stat -c %Z /home/profiles/$profile/$ntuser 2>/dev/null)
-elif [ -f /home/profiles/$profile5/$ntuser ]; then
-	mtime=$(stat -c %Z /home/profiles/$profile5/$ntuser 2>/dev/null)
-elif [ -f /home/profiles/$profile5/$ntuser ]; then
-	mtime=$(stat -c %Z /home/profiles/$profile6/$ntuser 2>/dev/null)
 else
 	mtime=-1
 fi
@@ -220,6 +243,7 @@ if [ "$oldmtime" == "$mtime" ]; then
         waitdel=1
     fi        
     /usr/share/se3/sbin/waitDel.sh /home/netlogon/$user.$machine.lck $waitdel &
+    rm -f /home/profiles/$profile/ntuser.pol
     exit 0           
 else
     # nouvelle session
@@ -236,16 +260,16 @@ sid=$(ldapsearch -xLLL uid=$user sambaSID | grep sambaSID | sed "s/sambaSID: //"
 mkgpopasswd $machine
 
 # correction des droits sur les profiles si necessaire
-if [ -d /home/profiles/$profile ]; then
-    prop=`stat -c%U /home/profiles/$profile`
-    if [ "$prop" != "$user" ]; then
-         chown -R $user:lcs-users /home/profile/$profile > /dev/null 2>&1
-    fi
-else
-    mkdir -p /home/profiles/$profile
-    chown  $user:lcs-users /home/profiles/$profile
+#if [ -d /home/profiles/$profile ]; then
+#    prop=`stat -c%U /home/profiles/$profile`
+#    if [ "$prop" != "$user" ]; then
+#         chown -R $user:lcs-users /home/profile/$profile > /dev/null 2>&1
+#    fi
+#else
+#    mkdir -p /home/profiles/$profile
+#    chown  $user:lcs-users /home/profiles/$profile
     #chmod 600 /home/profiles/$1
-fi
+#fi
 
 # Check if some connexion already alive
 /usr/share/se3/sbin/tcpcheck 30 $ip:139|grep -q "timed out" 
