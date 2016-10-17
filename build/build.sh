@@ -43,7 +43,7 @@ done
 chmod -R 755 "${PKGDIR}/DEBIAN"
 
 chmod +x  ${PKGDIR}/usr/share/se3/sbin/*
-chmod +x ${PKGDIR}/usr/share/se3/scripts/*
+# chmod +x ${PKGDIR}/usr/share/se3/scripts/*
 chmod +x ${PKGDIR}/usr/share/se3/shares/shares.avail/*
 
 
