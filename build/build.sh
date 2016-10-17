@@ -8,9 +8,10 @@ if [ ! -e "/usr/bin/fakeroot" ]; then
 	apt-get install fakeroot
 fi
 
+MODULENAME="se3-logonpy"
 SCRIPTDIR="${0%/*}"
 BUILDDIR=$(cd "$SCRIPTDIR"; pwd) # Same as SCRIPTDIR but with a full path.
-PKGDIR="${BUILDDIR}/se3-logonpy"
+PKGDIR="${BUILDDIR}/$MODULENAME"
 
 
 # Cleaning of $BUILDDIR.
@@ -58,7 +59,7 @@ find "$PKGDIR" -name ".empty" -delete
 # dpkg --build "$PKGDIR"
 # mv $PKGDIR.deb se3_$version.deb
 
-fakeroot dpkg-deb -b "$PKGDIR" "se3_$version.deb"
+fakeroot dpkg-deb -b "$PKGDIR" "${MODULENAME}${VERSION}.deb"
 
 
 echo "OK, building succesfully..."
