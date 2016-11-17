@@ -260,17 +260,21 @@ sid=$(ldapsearch -xLLL uid=$user sambaSID | grep sambaSID | sed "s/sambaSID: //"
 mkgpopasswd $machine
 
 # correction des droits sur les profiles si necessaire
-#if [ -d /home/profiles/$profile ]; then
-#    prop=`stat -c%U /home/profiles/$profile`
-#    if [ "$prop" != "$user" ]; then
-#         chown -R $user:lcs-users /home/profile/$profile > /dev/null 2>&1
-#    fi
-#else
-#    mkdir -p /home/profiles/$profile
-#    chown  $user:lcs-users /home/profiles/$profile
-    #chmod 600 /home/profiles/$1
-#fi
-
+WinVer $user $machine $ip
+case $? in
+7)
+if [ -d /home/profiles/$profile ]; then
+    prop=`stat -c%U /home/profiles/$profile`
+    if [ "$prop" != "$user" ]; then
+         chown -R $user:lcs-users /home/profile/$profile > /dev/null 2>&1
+    fi
+else
+    mkdir -p /home/profiles/$profile
+    chown  $user:lcs-users /home/profiles/$profile
+   #chmod 600 /home/profiles/$1
+fi
+;;
+esac
 # Check if some connexion already alive
 /usr/share/se3/sbin/tcpcheck 30 $ip:139|grep -q "timed out" 
 if [ "$?" == "0" ]
