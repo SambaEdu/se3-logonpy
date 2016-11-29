@@ -77,6 +77,8 @@ elif $(echo $ret|grep -q "Windows 10"); then
 	return 10
 elif  $(echo $ret|grep -q "Windows 7"); then
 	return 7
+elif  $(echo $ret|grep -q "Windows 5"); then
+	return 5
 else
 	return 0
 fi
@@ -202,11 +204,17 @@ case $? in
     ntuser=NTUSER.DAT
     type="Vista"
 ;;
-*)
+5)
     ext=bmp
     profile=$user
     ntuser=ntuser.dat
     type="WinXP"
+;;
+*)
+    ext=jpg
+    profile=$user.V2
+    ntuser=NTUSER.DAT
+    type="Vista"
 ;;
 esac
 
@@ -243,7 +251,17 @@ if [ "$oldmtime" == "$mtime" ]; then
         waitdel=1
     fi        
     /usr/share/se3/sbin/waitDel.sh /home/netlogon/$user.$machine.lck $waitdel &
-    rm -f /home/profiles/$profile/ntuser.pol
+
+	WinVer $user $machine $ip
+	case $? in
+	10)
+		rm -f /home/profiles/$profile/ntuser.pol
+	;;
+	11)
+		rm -f /home/profiles/$profile/ntuser.pol
+	;;
+	esac
+
     exit 0           
 else
     # nouvelle session
