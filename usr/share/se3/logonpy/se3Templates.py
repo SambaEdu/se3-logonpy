@@ -43,8 +43,8 @@ class se3Templates:
             Remove all links on desktop
         """
         try:
-            list = self.__getDirListing ("/home/%s/profil/Bureau" % \
-                                         (self.__user), True)
+            list = os.listdir ("/home/%s/profil/Bureau" % \
+                                         (self.__user))
             for item in list:
                 self.__removeLinks (item)
 
@@ -107,8 +107,7 @@ class se3Templates:
         except OSError:
             # path is a dir, path is not empty
             return
-           
-
+        
     def __getDirListing (self, dirPath, revert):
         """
             Return a list with dir content
