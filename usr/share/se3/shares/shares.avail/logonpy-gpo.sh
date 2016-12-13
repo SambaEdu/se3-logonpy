@@ -71,14 +71,12 @@ EOF
 function WinVer
 {
 ret=$(echo quit|smbclient //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD 2>&1)
-if $(echo $ret|grep -q "Windows 10 Pro 14"); then
-        return 11 
-elif $(echo $ret|grep -q "Windows 10"); then
+if $(echo $ret|grep  -q "Windows 10 Pro 14393"); then
+        return  
+elif $(echo $ret|grep  -q "Windows 10"); then
 	return 10
 elif  $(echo $ret|grep -q "Windows 7"); then
 	return 7
-elif  $(echo $ret|grep -q "Windows 5"); then
-	return 5
 else
 	return 0
 fi
@@ -184,39 +182,46 @@ machine=$2
 ip=$3
 type=$4
 
-WinVer $user $machine $ip
-case $? in
-7)
-    ext=jpg
-    profile=$user.V2
-    ntuser=NTUSER.DAT
-    type="Vista"
-;;
-10)
-    ext=jpg
-    profile=$user.V5
-    ntuser=NTUSER.DAT
-    type="Vista"
-;;
-11)
-    ext=jpg
-    profile=$user.V6
-    ntuser=NTUSER.DAT
-    type="Vista"
-;;
-5)
-    ext=bmp
-    profile=$user
-    ntuser=ntuser.dat
-    type="WinXP"
-;;
-*)
-    ext=jpg
-    profile=$user.V2
-    ntuser=NTUSER.DAT
-    type="Vista"
-;;
-esac
+
+# on verife que le poste repond
+/usr/share/se3/sbin/tcpcheck 10 $ip:139|grep -q "timed out" && exit 1 
+
+
+if [ "$type" == "Vista" ]; then
+   WinVer $user $machine $ip
+   case $? in
+   7)
+       ext=jpg
+       profile=$user.V2
+       ntuser=ntuser.dat
+       type="Vista"
+   ;;
+   10)
+       ext=jpg
+       profile=$user.V5
+       ntuser=NTUSER.DAT
+       type="Vista"
+   ;;
+   16)
+       ext=jpg
+       profile=$user.V6
+       ntuser=NTUSER.DAT
+       type="Vista"
+   ;;
+   *)
+       echo "probleme de detection de l'os pour $user sur la machine $machine d'ip $ip"
+       exit 1
+   ;;
+   esac
+elif [ "$type" == "XP" ]; then 
+   ext=bmp
+   profile=$user
+   ntuser=ntuser.dat
+else
+   echo "probleme de detection de l'os $type pour $user sur la machine $machine d'ip $ip"
+   exit 1
+fi
+
 
 # on efface les verrous de plus de 5 minutes, y a pas de raison qu'ils soient encore la
 find /home/netlogon -maxdepth 1 ! -cmin 5 -name *.$machine.lck -delete
@@ -229,6 +234,7 @@ if [ -f /home/netlogon/machine/$machine/action.bat ]; then
 fi    
 
 >/home/netlogon/$user.$machine.lck
+
 
 # On ne lance que si ntuser.dat a ete modifie 
 if [ -f /home/profiles/$profile/$ntuser ]; then
@@ -251,48 +257,38 @@ if [ "$oldmtime" == "$mtime" ]; then
         waitdel=1
     fi        
     /usr/share/se3/sbin/waitDel.sh /home/netlogon/$user.$machine.lck $waitdel &
-
-	WinVer $user $machine $ip
-	case $? in
-	10)
-		rm -f /home/profiles/$profile/ntuser.pol
-	;;
-	11)
-		rm -f /home/profiles/$profile/ntuser.pol
-	;;
-	esac
-
+    rm -f /home/profiles/$profile/ntuser.pol
     exit 0           
-else
-    # nouvelle session
-    waitdel=1
-	# si le rappatriment du profile lors du premier logoff ne se faisait pas, on perdrait les GPO au login suivant, d ou la condition qui suit.
-    [ "$mtime" != "-1" ] && echo "$mtime" > /home/netlogon/machine/$machine/logon.lck
 fi
+# nouvelle session
+waitdel=1
+
+# si le rappatriment du profile lors du premier logoff ne se faisait pas, on perdrait les GPO au login suivant, d ou la condition qui suit.
+[ "$mtime" != "-1" ] && echo "$mtime" > /home/netlogon/machine/$machine/logon.lck
+
 
 # initialisation des parametres
 . /etc/se3/config_m.cache.sh
 sid=$(ldapsearch -xLLL uid=$user sambaSID | grep sambaSID | sed "s/sambaSID: //")
 
-
+# on initialise le dossier gpo sur le serveur
 mkgpopasswd $machine
 
-# correction des droits sur les profiles si necessaire
-WinVer $user $machine $ip
-case $? in
-7)
-if [ -d /home/profiles/$profile ]; then
+# creation du dossier profile sinio les acls ne sont pas  bonnes avec seven
+# suppression du ntuser.ini  si pb acl
+if [ -d /home/profiles/$profile ]; then  
     prop=`stat -c%U /home/profiles/$profile`
     if [ "$prop" != "$user" ]; then
          chown -R $user:lcs-users /home/profile/$profile > /dev/null 2>&1
     fi
+    getfacl /home/profiles/$profile | grep -q "mask::" && setfacl -R -b /home/profiles/$profile && \
+ chown -R $user:lcs-users /home/profile/$profile > /dev/null 2>&1 && \
+ rm -f /home/profiles/$profile/ntuser.ini
 else
     mkdir -p /home/profiles/$profile
     chown  $user:lcs-users /home/profiles/$profile
-   #chmod 600 /home/profiles/$1
 fi
-;;
-esac
+
 # Check if some connexion already alive
 /usr/share/se3/sbin/tcpcheck 30 $ip:139|grep -q "timed out" 
 if [ "$?" == "0" ]
