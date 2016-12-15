@@ -68,19 +68,6 @@ EOF
 	return $?
 }
 
-function WinVer
-{
-ret=$(echo quit|smbclient //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD 2>&1)
-if $(echo $ret|grep  -q "Windows 10 Pro 14393"); then
-        return 16 
-elif $(echo $ret|grep  -q "Windows 10"); then
-	return 10
-elif  $(echo $ret|grep -q "Windows 7"); then
-	return 7
-else
-	return 0
-fi
-}
 
 function setGPOversion
 {
@@ -184,41 +171,32 @@ type=$4
 
 
 # on verife que le poste repond
-/usr/share/se3/sbin/tcpcheck 10 $ip:139|grep -q "timed out" && exit 1 
+/usr/share/se3/sbin/tcpcheck 10 $ip:139|grep -q "timed out" && echo "attention le poste $ip ne repond pas" >&2 && exit 1 
 
-
+# detection de la version de windows
+# a completer avec les differents builds depuis vista
 if [ "$type" == "Vista" ]; then
-   WinVer $user $machine $ip
-   case $? in
-   7)
+   ret=$(echo quit|smbclient //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD 2>&1)
+   build=$(echo $ret | sed 's/\(^.*OS=\[Windows [0-9]\+ [a-zA-Z]\+ \([0-9]\+\).*\].*$\)/\2/g') 
+   if [ "$build" -le "7601" ]; then
        ext=jpg
        profile=$user.V2
        ntuser=ntuser.dat
-       type="Vista"
-   ;;
-   10)
+   elif [ "$build" -lt "14393" ]; then
        ext=jpg
        profile=$user.V5
        ntuser=NTUSER.DAT
-       type="Vista"
-   ;;
-   16)
+   else
        ext=jpg
        profile=$user.V6
        ntuser=NTUSER.DAT
-       type="Vista"
-   ;;
-   *)
-       echo "probleme de detection de l'os pour $user sur la machine $machine d'ip $ip"
-       exit 1
-   ;;
-   esac
+   fi
 elif [ "$type" == "XP" ]; then 
    ext=bmp
    profile=$user
    ntuser=ntuser.dat
 else
-   echo "probleme de detection de l'os $type pour $user sur la machine $machine d'ip $ip"
+   echo "probleme de detection de l'os $type pour $user sur la machine $machine d'ip $ip" >&2
    exit 1
 fi
 
@@ -274,16 +252,21 @@ sid=$(ldapsearch -xLLL uid=$user sambaSID | grep sambaSID | sed "s/sambaSID: //"
 # on initialise le dossier gpo sur le serveur
 mkgpopasswd $machine
 
-# creation du dossier profile sinio les acls ne sont pas  bonnes avec seven
+# creation du dossier profile sinon les acls ne sont pas  bonnes avec seven
 # suppression du ntuser.ini  si pb acl
 if [ -d /home/profiles/$profile ]; then  
     prop=`stat -c%U /home/profiles/$profile`
     if [ "$prop" != "$user" ]; then
          chown -R $user:lcs-users /home/profile/$profile > /dev/null 2>&1
     fi
-    getfacl /home/profiles/$profile | grep -q "mask::" && setfacl -R -b /home/profiles/$profile && \
- chown -R $user:lcs-users /home/profile/$profile > /dev/null 2>&1 && \
- rm -f /home/profiles/$profile/ntuser.ini
+    getfacl -pc /home/profiles/$profile | grep -q "mask::"
+    if [ "$?" == "0" ]; then
+        setfacl -R -b /home/profiles/$profile
+        chown -R $user:lcs-users /home/profile/$profile > /dev/null 2>&1
+        chmod 777 /home/profile/$profile
+        chmod 600 /home/profile/$profile/$ntuser /home/profile/$profile/ntuser.pol
+        rm -f /home/profiles/$profile/ntuser.ini
+    fi
 else
     mkdir -p /home/profiles/$profile
     chown  $user:lcs-users /home/profiles/$profile
