@@ -72,7 +72,7 @@ function WinVer
 {
 ret=$(echo quit|smbclient //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD 2>&1)
 if $(echo $ret|grep  -q "Windows 10 Pro 14393"); then
-        return  
+        return 16 
 elif $(echo $ret|grep  -q "Windows 10"); then
 	return 10
 elif  $(echo $ret|grep -q "Windows 7"); then
