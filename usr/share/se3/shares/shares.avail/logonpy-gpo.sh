@@ -191,7 +191,7 @@ if [ "$type" == "Vista" ]; then
        profile=$user.V6
        ntuser=NTUSER.DAT
    fi
-elif [ "$type" == "XP" ]; then 
+elif [ "$type" == "WinXP" ]; then 
    ext=bmp
    profile=$user
    ntuser=ntuser.dat
