@@ -17,7 +17,7 @@ function createREG
 {
 echo -e "REGEDIT4\r\n"> /home/netlogon/machine/$2/user.reg
 flag=0
-
+sid=$(ldapsearch -xLLL uid=$1 sambaSID | grep sambaSID | sed "s/sambaSID: //")
 # on cherche les cles qui doivent etre passees a chaque fois
 for pathreg in /home/netlogon/*.ref; do
 	reg=${pathreg##*/}
@@ -163,42 +163,22 @@ echo password=$xppass
 chmod 600 /home/netlogon/machine/$1/gpoPASSWD
 }
 
+function erreur #"user" "machine" "mesg"
+{
+    echo "$3">&2
+    /usr/share/se3/sbin/waitDel.sh /home/netlogon/$1.$2.lck 1 &
+    exit 1
+}
+
 
 user=$1 
 machine=$2 
 ip=$3
 type=$4
 
-
+## verifications preliminaires
 # on verife que le poste repond
-/usr/share/se3/sbin/tcpcheck 10 $ip:139|grep -q "timed out" && echo "attention le poste $ip ne repond pas" >&2 && exit 1 
-
-# detection de la version de windows
-# a completer avec les differents builds depuis vista
-if [ "$type" == "Vista" ]; then
-   ret=$(echo quit|smbclient //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD 2>&1)
-   build=$(echo $ret | sed 's/\(^.*OS=\[Windows [0-9]\+ [a-zA-Z]\+ \([0-9]\+\).*\].*$\)/\2/g') 
-   if [ "$build" -le "7601" ]; then
-       ext=jpg
-       profile=$user.V2
-       ntuser=ntuser.dat
-   elif [ "$build" -lt "14393" ]; then
-       ext=jpg
-       profile=$user.V5
-       ntuser=NTUSER.DAT
-   else
-       ext=jpg
-       profile=$user.V6
-       ntuser=NTUSER.DAT
-   fi
-elif [ "$type" == "WinXP" ]; then 
-   ext=bmp
-   profile=$user
-   ntuser=ntuser.dat
-else
-   echo "probleme de detection de l'os $type pour $user sur la machine $machine d'ip $ip" >&2
-   exit 1
-fi
+/usr/share/se3/sbin/tcpcheck 10 $ip:139|grep -q "timed out" && erreur $user $machine "attention le poste $ip ne repond pas" 
 
 
 # on efface les verrous de plus de 5 minutes, y a pas de raison qu'ils soient encore la
@@ -212,6 +192,45 @@ if [ -f /home/netlogon/machine/$machine/action.bat ]; then
 fi    
 
 >/home/netlogon/$user.$machine.lck
+
+# initialisation des parametres
+. /etc/se3/config_m.cache.sh
+
+# on initialise le dossier gpo sur le serveur
+mkgpopasswd $machine
+
+
+# detection de la version de windows
+# a completer avec les differents builds depuis vista
+if [ "$type" == "Vista" ]; then
+   ret=$(echo quit|smbclient //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD 2>&1)
+   if [ "$?" != "0" ]; then
+       erreur $user $machine "$ret"    
+   fi    
+   build=$(echo $ret | sed 's/\(^.*OS=\[Windows [0-9]\+ [a-zA-Z]\+ \([0-9]\+\).*\].*$\)/\2/g') 
+   if [ "$build" -le "7601" ]; then
+       ext=jpg
+       profile=$user.V2
+       ntuser=ntuser.dat
+   elif [ "$build" -lt "14393" ]; then
+       ext=jpg
+       profile=$user.V5
+       ntuser=NTUSER.DAT
+   elif [ "$build" -lt "20000" ]; then
+       ext=jpg
+       profile=$user.V6
+       ntuser=NTUSER.DAT
+   else
+       erreur $user $machine "probleme de detection de l'os build:$build pour $user sur la machine $machine d'ip $ip"
+   fi
+elif [ "$type" == "WinXP" ]; then 
+   ext=bmp
+   profile=$user
+   ntuser=ntuser.dat
+else
+   erreur $user $machine "probleme de detection de l'os $type pour $user sur la machine $machine d'ip $ip"
+fi
+
 
 
 # On ne lance que si ntuser.dat a ete modifie 
@@ -245,13 +264,6 @@ waitdel=1
 [ "$mtime" != "-1" ] && echo "$mtime" > /home/netlogon/machine/$machine/logon.lck
 
 
-# initialisation des parametres
-. /etc/se3/config_m.cache.sh
-sid=$(ldapsearch -xLLL uid=$user sambaSID | grep sambaSID | sed "s/sambaSID: //")
-
-# on initialise le dossier gpo sur le serveur
-mkgpopasswd $machine
-
 # creation du dossier profile sinon les acls ne sont pas  bonnes avec seven
 # suppression du ntuser.ini  si pb acl
 if [ -d /home/profiles/$profile ]; then  
@@ -278,9 +290,10 @@ if [ "$?" == "0" ]
 then
 	[ ! -d "/home/$user" ] && /usr/share/se3/shares/shares.avail/mkhome.sh $user $machine $ip $type
         EnableGPO $machine $type 
-	rm -f /home/netlogon/$user.$machine.lck
-	exit 1
+	erreur $user $machine "la machine $machine ne repond pas"
 fi
+
+
 echo "--------ouverture de session---------------"
 [ ! -d "/home/$user" ] && /usr/share/se3/shares/shares.avail/mkhome.sh $user $machine $ip $type
 
