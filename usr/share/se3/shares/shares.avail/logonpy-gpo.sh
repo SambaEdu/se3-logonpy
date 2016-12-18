@@ -161,7 +161,7 @@ echo username=$1\\adminse3
 echo password=$xppass
 )>/home/netlogon/machine/$1/gpoPASSWD
 chmod 600 /home/netlogon/machine/$1/gpoPASSWD
-}
+}echo "" >&2
 
 function erreur #"user" "machine" "mesg"
 {
@@ -175,10 +175,11 @@ user=$1
 machine=$2 
 ip=$3
 type=$4
+timecode="$(LC_ALL=c date +"%b %d %R")"
 
 ## verifications preliminaires
 # on verife que le poste repond
-/usr/share/se3/sbin/tcpcheck 10 $ip:139|grep -q "timed out" && erreur $user $machine "attention le poste $ip ne repond pas" 
+/usr/share/se3/sbin/tcpcheck 10 $ip:139|grep -q "failed" && erreur $user $machine "attention le poste $ip ne repond pas" 
 
 
 # on efface les verrous de plus de 5 minutes, y a pas de raison qu'ils soient encore la
@@ -285,7 +286,7 @@ else
 fi
 
 # Check if some connexion already alive
-/usr/share/se3/sbin/tcpcheck 30 $ip:139|grep -q "timed out" 
+/usr/share/se3/sbin/tcpcheck 30 $ip:139|grep -q "failed" 
 if [ "$?" == "0" ]
 then
 	[ ! -d "/home/$user" ] && /usr/share/se3/shares/shares.avail/mkhome.sh $user $machine $ip $type
@@ -294,7 +295,7 @@ then
 fi
 
 
-echo "--------ouverture de session---------------"
+echo "$timecode --ouverture de session de $user sur $ret revision $build--" >&2
 [ ! -d "/home/$user" ] && /usr/share/se3/shares/shares.avail/mkhome.sh $user $machine $ip $type
 
 # Wallpaper
@@ -337,4 +338,4 @@ else
 fi
 # on n'efface le lock qu'au bout de quelques secondes
 /usr/share/se3/sbin/waitDel.sh /home/netlogon/$user.$machine.lck $waitdel &
-
+echo "" >&2
