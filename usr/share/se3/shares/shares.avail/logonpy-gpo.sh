@@ -161,7 +161,8 @@ echo username=$1\\adminse3
 echo password=$xppass
 )>/home/netlogon/machine/$1/gpoPASSWD
 chmod 600 /home/netlogon/machine/$1/gpoPASSWD
-}echo "" >&2
+echo "" >&2
+}
 
 function erreur #"user" "machine" "mesg"
 {
