@@ -271,14 +271,14 @@ waitdel=1
 if [ -d /home/profiles/$profile ]; then  
     prop=`stat -c%U /home/profiles/$profile`
     if [ "$prop" != "$user" ]; then
-         chown -R $user:lcs-users /home/profile/$profile > /dev/null 2>&1
+         chown -R $user:lcs-users /home/profiles/$profile > /dev/null 2>&1
     fi
     getfacl -pc /home/profiles/$profile | grep -q "mask::"
     if [ "$?" == "0" ]; then
         setfacl -R -b /home/profiles/$profile
         chown -R $user:lcs-users /home/profile/$profile > /dev/null 2>&1
-        chmod 777 /home/profile/$profile
-        chmod 600 /home/profile/$profile/$ntuser /home/profile/$profile/ntuser.pol
+        chmod 777 /home/profiles/$profile
+        chmod 600 /home/profiles/$profile/$ntuser /home/profiles/$profile/ntuser.pol
         rm -f /home/profiles/$profile/ntuser.ini
     fi
 else
