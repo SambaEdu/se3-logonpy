@@ -43,10 +43,12 @@ class se3Templates:
             Remove all links on desktop
         """
         try:
-            list = os.listdir ("/home/%s/profil/Bureau" % \
-                                         (self.__user))
+#            list = os.listdir ("/home/%s/profil/Bureau" % \
+#                                         (self.__user))
+	    dir = "/home/%s/profil/Bureau/" % self.__user
+	    list = os.listdir (dir)
             for item in list:
-                self.__removeLinks (item)
+                self.__removeLinks (dir + item)
 
         except OSError:
             print "Error while cleaning desktop"
