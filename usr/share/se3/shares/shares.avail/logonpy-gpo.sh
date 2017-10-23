@@ -209,7 +209,7 @@ if [ "$type" == "Vista" ]; then
    if [ "$?" != "0" ]; then
        erreur $user $machine "$ret"    
    fi    
-   build=$(echo $ret | sed 's/\(^.*OS=\[Windows \(Server\)*[ 0-9]+ \(R2\)*[ a-zA-Z]+ \([0-9]+\).*\].*$\)/\4/g') 
+   build=$(echo $ret | sed 's/\(^.*OS=\[Windows \(Server\)*[ 0-9]\+ \(R2\)*[ a-zA-Z]\+ \([0-9]\+\).*\].*$\)/\4/g') 
    if [ "$build" -le "7601" ]; then
        ext=jpg
        profile=$user.V2
