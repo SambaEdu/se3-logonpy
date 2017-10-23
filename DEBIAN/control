@@ -1,5 +1,5 @@
 Package: se3-logonpy
-Version: 3.0.2
+Version: 3.0.3
 Section: contrib
 Priority: optional
 Architecture: all
@@ -7,5 +7,5 @@ Conflicts: se3-logonpl
 Replaces: se3-logonpl
 Depends: wine, python-mysqldb, python-ldap
 Installed-Size: 1024
-Maintainer: Cedric Bellegarde <cbellegarde@ac-nantes.fr>
+Maintainer: Denis Bonnenfant <denis.bonnenfant@diderot.org>
 Description: Script de connexion python
