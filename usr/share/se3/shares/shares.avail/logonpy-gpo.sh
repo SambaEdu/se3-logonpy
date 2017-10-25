@@ -44,7 +44,7 @@ fi
 
 function uploadGPO
 {
-smbclient -mSMB3  //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD << EOF
+smbclient  //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD << EOF
 	mkdir System32\GroupPolicy
 	mkdir System32\GroupPolicy\User
 	mkdir System32\GroupPolicy\User\Scripts
@@ -71,7 +71,7 @@ EOF
 
 function setGPOversion
 {
-smbclient -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD << EOF
+smbclient  //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD << EOF
    get System32\GroupPolicy\gpt.ini /home/netlogon/machine/$2/gpt.ini
 EOF
 if [ "$?" != "0" ]; then
@@ -94,7 +94,7 @@ fi
 function uploadWallpaper
 {
 if [  -f "/var/se3/Docs/media/fonds_ecran/$1.$ext" ]; then
-    smbclient  -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD << EOF
+    smbclient  //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD << EOF
 	put /var/se3/Docs/media/fonds_ecran/$1.$ext Web\Wallpaper\\$1_se3.$ext
 EOF
 return $?
@@ -103,34 +103,34 @@ return 0
 }
 function setADM
 {
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/gpt.ini" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User/registry.pol" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts/scripts.ini" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts/Logon" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts/Logon/logon.cmd" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts/Logoff" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts/Logoff/logoff.cmd" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/Machine" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/Machine/registry.pol" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/Machine/Scripts" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/Machine/Scripts/scripts.ini" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/Machine/Scripts/Startup" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/Machine/Scripts/Startup/startup.cmd" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/Machine/Scripts/Shutdown" -C "$2\\administrateur" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/Machine/Scripts/Shutdown/shutdown.cmd" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/gpt.ini" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User/registry.pol" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts/scripts.ini" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts/Logon" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts/Logon/logon.cmd" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts/Logoff" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts/Logoff/logoff.cmd" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/Machine" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/Machine/registry.pol" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/Machine/Scripts" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/Machine/Scripts/scripts.ini" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/Machine/Scripts/Startup" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/Machine/Scripts/Startup/startup.cmd" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/Machine/Scripts/Shutdown" -C "$2\\administrateur" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/Machine/Scripts/Shutdown/shutdown.cmd" -C "$2\\administrateur" || return $?
 	
 }
 
 function setACL
 {
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User/registry.pol" -a "ACL:$se3_domain\\$1:ALLOWED/0/RDX" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts/scripts.ini" -a "ACL:$se3_domain\\$1:ALLOWED/0/RDX" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$  -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User/Scripts/Logon/logon.cmd" -a "ACL:$se3_domain\\$1:ALLOWED/0/RDX" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$  -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User/Scripts/Logoff/logoff.cmd" -a "ACL:$se3_domain\\$1:ALLOWED/0/RDX" || return $?
-	smbcacls -mSMB3 //"$3"/ADMIN$  -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/gpt.ini" -a "ACL:$se3_domain\\$1:ALLOWED/0/RDX" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User/registry.pol" -a "ACL:$se3_domain\\$1:ALLOWED/0/RDX" || return $?
+	smbcacls //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD  "/System32/Grouppolicy/User/Scripts/scripts.ini" -a "ACL:$se3_domain\\$1:ALLOWED/0/RDX" || return $?
+	smbcacls //"$3"/ADMIN$  -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User/Scripts/Logon/logon.cmd" -a "ACL:$se3_domain\\$1:ALLOWED/0/RDX" || return $?
+	smbcacls //"$3"/ADMIN$  -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/User/Scripts/Logoff/logoff.cmd" -a "ACL:$se3_domain\\$1:ALLOWED/0/RDX" || return $?
+	smbcacls //"$3"/ADMIN$  -A /home/netlogon/machine/$2/gpoPASSWD "/System32/Grouppolicy/gpt.ini" -a "ACL:$se3_domain\\$1:ALLOWED/0/RDX" || return $?
 	rm -f /home/netlogon/machine/$2/fallback.bat
 	rm -f /home/netlogon/machine/$2/EnableGPO.bat
 	return 0
@@ -205,7 +205,7 @@ mkgpopasswd $machine
 # detection de la version de windows
 # a completer avec les differents builds depuis vista
 if [ "$type" == "Vista" ]; then
-   ret=$(echo quit|smbclient -mSMB3 //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD 2>&1)
+   ret=$(echo quit|smbclient //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD 2>&1)
    if [ "$?" != "0" ]; then
        erreur $user $machine "$ret"    
    fi    
@@ -218,15 +218,16 @@ if [ "$type" == "Vista" ]; then
        ext=jpg
        profile=$user.V5
        ntuser=NTUSER.DAT
-   elif [ "$build" -lt "20000" ]; then
+   elif [ "$build" -lt "16299" ]; then
        ext=jpg
        profile=$user.V6
        ntuser=NTUSER.DAT
-   else
-#       erreur $user $machine "probleme de detection de l'os build:$build pour $user sur la machine $machine d'ip $ip"
+    elif [ "$build" -lt "20000" ]; then
        ext=jpg
        profile=$user.V6
        ntuser=ntuser.dat
+   else
+       erreur $user $machine "probleme de detection de l'os build:$build pour $user sur la machine $machine d'ip $ip"
    fi
 elif [ "$type" == "WinXP" ]; then 
    ext=bmp
@@ -274,15 +275,15 @@ waitdel=1
 if [ -d /home/profiles/$profile ]; then  
     prop=`stat -c%U /home/profiles/$profile`
     if [ "$prop" != "$user" ]; then
-         echo "chown -R $user:lcs-users /home/profiles/$profile > /dev/null 2>&1"
+         chown -R $user:lcs-users /home/profiles/$profile > /dev/null 2>&1
     fi
     getfacl -pc /home/profiles/$profile | grep -q "mask::"
     if [ "$?" == "0" ]; then
-#        setfacl -R -b /home/profiles/$profile
-#        chown -R $user:lcs-users /home/profiles/$profile > /dev/null 2>&1
-        chmod 777 /home/profiles/$profile
-        chmod 600 /home/profiles/$profile/$ntuser /home/profiles/$profile/ntuser.pol
-#        rm -f /home/profiles/$profile/ntuser.ini
+        setfacl -R -b /home/profiles/$profile
+        chown -R $user:lcs-users /home/profiles/$profile > /dev/null 2>&1
+#         chmod 777 /home/profiles/$profile
+#         chmod 600 /home/profiles/$profile/$ntuser /home/profiles/$profile/ntuser.pol
+        rm -f /home/profiles/$profile/ntuser.ini
     fi
 else
     mkdir -p /home/profiles/$profile
@@ -329,10 +330,10 @@ chmod 664 /home/netlogon/machine/$machine/*
 chmod 600 /home/netlogon/machine/$machine/gpoPASSWD
 
 # on verifie que les GPO SE3 sont installee sur le poste, sinon on les installe
-setGPOversion $user $machine $ip && smbcacls -mSMB3 //"$ip"/ADMIN$ -A /home/netlogon/machine/$machine/gpoPASSWD "/system32/Grouppolicy/gpt.ini">/dev/null 2>&1 && uploadGPO $user $machine $ip
+setGPOversion $user $machine $ip && smbcacls //"$ip"/ADMIN$ -A /home/netlogon/machine/$machine/gpoPASSWD "/system32/Grouppolicy/se3.log">/dev/null 2>&1 && uploadGPO $user $machine $ip
 if [ "$?" == "0" ]
 then
-    uploadWallpaper $user $machine $ip #&&  setACL $user $machine $ip 
+    uploadWallpaper $user $machine $ip && setADM $user $machine $ip && setACL $user $machine $ip 
 	if [ "$?" == "1" ]
 	then
 	    EnableGPO $machine $type
