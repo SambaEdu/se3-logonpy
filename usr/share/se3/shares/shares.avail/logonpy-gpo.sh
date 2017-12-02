@@ -4,6 +4,7 @@
 #shares_Win2K: profiles
 #shares_Vista: profiles
 #shares_Seven: profiles
+#shares_Ten: profiles
 #action: start
 #level: 01
 
@@ -138,7 +139,7 @@ function setACL
 
 function EnableGPO # $netbiosname $arch
 {
-    if [ "$2" == "Vista" ]||[ "$2" == "Seven" ]
+    if [ "$2" == "Vista" ]||[ "$2" == "Seven" ]||[ "$2" == "Ten" ]
     then
     	SHARECMD="net share C\$=C: /GRANT:adminse3,FULL\r\nnet share ADMIN\$ /GRANT:adminse3,FULL\r\n"
     else
@@ -204,17 +205,17 @@ mkgpopasswd $machine
 
 # detection de la version de windows
 # a completer avec les differents builds depuis vista
-if [ "$type" == "Vista" ]; then
+if [ "$type" == "Vista" ] || [ "$type" == "Seven" ]; then
+	ext=jpg
+    profile=$user.V2
+    ntuser=ntuser.dat
+elif [ "$type" ==  "Ten" ]; then
    ret=$(echo quit|smbclient //"$3"/ADMIN$ -A /home/netlogon/machine/$2/gpoPASSWD 2>&1)
    if [ "$?" != "0" ]; then
        erreur $user $machine "$ret"    
    fi    
    build=$(echo $ret | sed 's/\(^.*OS=\[Windows \(Server\)*[ 0-9]\+ \(R2\)*[ a-zA-Z]\+ \([0-9]\+\).*\].*$\)/\4/g') 
-   if [ "$build" -le "7601" ]; then
-       ext=jpg
-       profile=$user.V2
-       ntuser=ntuser.dat
-   elif [ "$build" -lt "14393" ]; then
+   if [ "$build" -lt "14393" ]; then
        ext=jpg
        profile=$user.V5
        ntuser=NTUSER.DAT

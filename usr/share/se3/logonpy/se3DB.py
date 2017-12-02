@@ -98,55 +98,55 @@ class se3DB:
 #                    if row2[0] == "HKEY_CURRENT_USER\Control Panel\Desktop\TileWallpaper":
 #                        tileWallSet = True
 #                        rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\WallpaperStyle",\
-#                              "REG_SZ", "2000,XP,Vista,Seven", results[key]))
+#                              "REG_SZ", "2000,XP,Vista,Seven,Ten", results[key]))
 #                else:
 #                    rest.append ((row2[0], row2[1], row2[2], results[key]))
 
         cursor.close ()
 
         if self.getValue ("localmenu") == "1":
-            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Programs', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven','%USERPROFILE%\Demarrer\Programmes'))
-            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Start Menu', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven','%USERPROFILE%\Demarrer'))
-            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Startup', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', '%USERPROFILE%\Demarrer\Programmes\Démarrage'.decode('utf8').encode('iso-8859-15')))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Programs', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven,Ten','%USERPROFILE%\Demarrer\Programmes'))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Start Menu', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven,Ten','%USERPROFILE%\Demarrer'))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Startup', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven,Ten', '%USERPROFILE%\Demarrer\Programmes\Démarrage'.decode('utf8').encode('iso-8859-15')))
         else:
-            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Programs', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\Demarrer\Programmes'))
-            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Start Menu', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\Demarrer'))
-            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Startup', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\profil\Demarrer\Programmes\Démarrage'.decode('utf8').encode('iso-8859-15')))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Programs', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven,Ten', 'K:\profil\Demarrer\Programmes'))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Start Menu', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven,Ten', 'K:\profil\Demarrer'))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Startup', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven,Ten', 'K:\profil\Demarrer\Programmes\Démarrage'.decode('utf8').encode('iso-8859-15')))
 
         if self.getValue ("mes_docs"):
-            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Personal', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', self.getValue ("mes_docs")))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Personal', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven,Ten', self.getValue ("mes_docs")))
         else:
-            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Personal', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven', 'K:\Docs'))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Personal', 'REG_EXPAND_SZ', '2000,XP,Vista,Seven,Ten', 'K:\Docs'))
 
         if self.getValue ("corbeille") == "1":
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{00000000-0000-0000-0000-000000210979}\\",\
-                         "REG_SZ", "2000,XP,Vista,Seven", "Corbeille Réseau"))
+                         "REG_SZ", "2000,XP,Vista,Seven,Ten", "Corbeille Réseau"))
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{00000000-0000-0000-0000-000000210979}\\",\
-                         "REG_SZ", "2000,XP,Vista,Seven", "Corbeille Réseau"))
+                         "REG_SZ", "2000,XP,Vista,Seven,Ten", "Corbeille Réseau"))
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\NonEnum\{00000000-0000-0000-0000-000000210979}",\
-                         "REG_DWORD", "2000,XP,Vista,Seven", "0"))
+                         "REG_DWORD", "2000,XP,Vista,Seven,Ten", "0"))
         else:
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\NonEnum\{00000000-0000-0000-0000-000000210979}",\
-                         "REG_DWORD", "2000,XP,Vista,Seven", "1"))
+                         "REG_DWORD", "2000,XP,Vista,Seven,Ten", "1"))
 
         if self.getValue ("hide_logon") == "0":
-            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\HideLogonScripts', 'REG_DWORD', 'XP', '0'))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\HideLogonScripts', 'REG_DWORD', 'XP,Vista,Seven,Ten', '0'))
         else:
-            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\HideLogonScripts', 'REG_DWORD', 'XP', '1'))
+            rest.append (('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\HideLogonScripts', 'REG_DWORD', 'XP,Vista,Seven,Ten', '1'))
 
         if wallModule:
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\ClassicShell",\
-                         "REG_DWORD", "Vista,Seven", "SUPPR"))
+                         "REG_DWORD", "Vista,Seven,Ten", "SUPPR"))
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\ForceActiveDesktopOn",\
                          "REG_DWORD", "2000,XP", "0"))
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\ForceActiveDesktopOn",\
-                         "REG_DWORD", "Vista,Seven", "1"))
+                         "REG_DWORD", "Vista,Seven,Ten", "1"))
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoActiveDesktop",\
                          "REG_DWORD", "2000,XP", "1"))
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop\NoChangingWallpaper",\
-                         "REG_DWORD", "2000,XP,Vista,Seven", "1"))
+                         "REG_DWORD", "2000,XP,Vista,Seven,Ten", "1"))
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop\NoHTMLWallpaper",\
-                         "REG_DWORD", "Vista,Seven", "SUPPR"))
+                         "REG_DWORD", "Vista,Seven,Ten", "SUPPR"))
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\Wallpaper",\
                          "REG_SZ", "2000,XP", "C:\Windows\Web\Wallpaper\%s_se3.bmp" % self.__user))
             rest.append (("HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper",\
@@ -154,10 +154,10 @@ class se3DB:
             rest.append (("HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper",\
                          "REG_DWORD", "2000,XP", "PROTECT"))          
             rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\Wallpaper",\
-                         "REG_SZ", "Vista,Seven", "C:\Windows\Web\Wallpaper\%s_se3.jpg" % self.__user))
+                         "REG_SZ", "Vista,Seven,Ten", "C:\Windows\Web\Wallpaper\%s_se3.jpg" % self.__user))
             rest.append (("HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper",\
-                         "REG_SZ", "Vista,Seven", "C:\Windows\Web\Wallpaper\%s_se3.jpg" % self.__user))
+                         "REG_SZ", "Vista,Seven,Ten", "C:\Windows\Web\Wallpaper\%s_se3.jpg" % self.__user))
             if not tileWallSet:
                 rest.append (("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\WallpaperStyle",\
-                         "REG_SZ", "2000,XP,Vista,Seven", "2"))
+                         "REG_SZ", "2000,XP,Vista,Seven,Ten", "2"))
         return rest
