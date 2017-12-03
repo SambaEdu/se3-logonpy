@@ -2,6 +2,8 @@
 #shares_WinXP: netlogon
 #shares_Win2K: netlogon
 #shares_Vista: netlogon
+#shares_Seven: netlogon
+#shares_Ten: netlogon
 #action: start
 #level: 01
 
@@ -29,7 +31,7 @@ else
 	sed -i "s/Version=.*/Version=$GPO_VERS\r/g" /home/netlogon/machine/$2/gpt.ini
 fi
 
-if [ "$4" == "Vista" ]
+if [ "$4" == "Vista" ] || [ "$4" == "Seven" ] || [ "$4" == "Ten" ]
 then
 	SHARECMD="net share C\$=C: /GRANT:adminse3,FULL"
 else

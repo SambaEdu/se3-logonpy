@@ -2,6 +2,8 @@
 #shares_WinXP: profiles
 #shares_Win2K: profiles
 #shares_Vista: profiles
+#shares_Seven: profiles
+#shares_Ten: profiles
 #action: start
 #level: 02
 while read line
