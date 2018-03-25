@@ -37,6 +37,38 @@ class se3Templates:
         except OSError:
             print "Error while creating desktop"
 
+# afin que le bureau puisse gerer des icones placées dans des repertoires
+# décommenter les 2 fonctions ci dessous et commenter la fonction cleandesktop
+#	
+#   def cleandir (self, dir):
+#        """
+#            efface tout les liens contenus dans le repertoire dir
+#        """
+#        try:
+#             list = os.listdir (dir)
+#             for item in list:
+#                 if os.path.islink (dir + item):
+#                     print "Effacement du lien symbolique " + dir + item
+#                     self.__removeLinks (dir + item)
+#                 else :
+#                     if os.path.isdir (dir  + item):
+#                         self.cleandir (dir + item + "/")
+#                         if os.listdir (dir + item + "/") == []:
+#                             print "Le repertoire " + dir + item + "/ est vide on l efface"
+#                             os.rmdir  (dir + item)
+#        except OSError:
+#            print "Error while cleaning repertoire " + dir + item
+#
+# def cleanDesktop (self):
+#        """
+#            Remove all links on desktop
+#        """
+#        try:
+#            dir = "/home/%s/profil/Bureau/" % self.__user
+#            self.cleandir (dir)
+#        except OSError:
+#            print "Error while cleaning desktop"
+	
 
     def cleanDesktop (self):
         """
